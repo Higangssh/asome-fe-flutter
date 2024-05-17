@@ -1,8 +1,7 @@
 import 'package:asome/ui/bar/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:webview_flutter/webview_flutter.dart';
-import 'package:asome/ui/bar/custom_appbar.dart';
+import '../../webview/login_webview.dart';
 
 class LoginPage extends StatelessWidget {
   @override
@@ -108,12 +107,12 @@ class LoginPage extends StatelessWidget {
 }
 void _GoogleRequest(BuildContext context) async {
   try {
-    var response = await http.get(Uri.parse('http://192.168.0.30:9000/test')); // 예시 URL로 변경
+    var response = await http.get(Uri.parse('http://172.18.35.233:9000/test')); // 예시 URL로 변경
     if (response.statusCode == 200) {
       // 성공적으로 요청을 보냈을 때의 처리
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => NaverRedirectPage()), // 로그인 페이지로 이동
+        MaterialPageRoute(builder: (context) => LoginWebview()), // 로그인 페이지로 이동
       );
       print('요청이 성공적으로 보내졌습니다.');
 
@@ -124,21 +123,5 @@ void _GoogleRequest(BuildContext context) async {
   } catch (e) {
     // 예외 처리
     print('오류: $e');
-  }
-}
-
-class NaverRedirectPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar:CustomAppBar(themeData: Theme.of(context),),
-      body: const SafeArea(
-        child: WebView(
-          initialUrl: 'http://192.168.0.30:9000/login',
-          javascriptMode: JavascriptMode.unrestricted,
-          userAgent: "random",
-        ),
-      )
-    );
   }
 }

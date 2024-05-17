@@ -8,9 +8,9 @@ class MainPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('메인 페이지'),
+        title: const Text('메인 페이지'),
       ),
-      body: Center(
+      body: const Center(
         child: Text('메인 페이지'),
       ),
     );

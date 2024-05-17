@@ -21,7 +21,7 @@ class _InitialPageState extends State<InitialPage> {
   }
 
   bool _isLoading = false;
-  final _url = Uri.parse('http://192.168.0.30:9000/api/test');
+  final _url = Uri.parse('http://172.18.35.233:9000/test');
 
   Future<void> _checkApiAndNavigateToMainPage() async {
     setState(() {
