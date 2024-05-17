@@ -107,7 +107,7 @@ class LoginPage extends StatelessWidget {
 }
 void _GoogleRequest(BuildContext context) async {
   try {
-    var response = await http.get(Uri.parse('http://172.18.35.233:9000/test')); // 예시 URL로 변경
+    var response = await http.get(Uri.parse('http://172.18.32.138:9000/test')); // 예시 URL로 변경
     if (response.statusCode == 200) {
       // 성공적으로 요청을 보냈을 때의 처리
       Navigator.pushReplacement(

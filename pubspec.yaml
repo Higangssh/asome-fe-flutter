@@ -38,6 +38,8 @@ dependencies:
   http: ^1.2.1
   flutter_secure_storage: ^9.1.1
   webview_flutter: ^3.0.0
+  webview_cookie_manager: ^2.0.6
+  shared_preferences: ^2.2.3
 
 dev_dependencies:
   flutter_test:
