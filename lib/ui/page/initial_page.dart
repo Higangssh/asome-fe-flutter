@@ -1,8 +1,9 @@
+import 'package:asome/controller/url_controller.dart';
+import 'package:asome/route/main_route.dart';
 import 'package:asome/ui/bar/custom_appbar.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'login_page.dart';
-import 'main_page.dart';
 
 
 class InitialPage extends StatefulWidget {
@@ -13,35 +14,27 @@ class InitialPage extends StatefulWidget {
 }
 
 class _InitialPageState extends State<InitialPage> {
-
+  late UrlController _urlController;
   @override
   void initState() {
     super.initState();
+    _urlController=Get.find<UrlController>();
     _checkApiAndNavigateToMainPage();
   }
 
-  bool _isLoading = false;
-  final _url = Uri.parse('http://172.18.32.138:9000/test');
 
   Future<void> _checkApiAndNavigateToMainPage() async {
-    setState(() {
-      _isLoading = true;
-    });
+
+    _urlController.isLoading.value = true;
 
     try {
-      var response = await http.get(_url);
+      var response = await http.get(Uri.parse("${_urlController.url.value}/test"));
 
       if (response.statusCode == 401) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const MainPage()),
-        );
+        Get.offAllNamed(MainRoute.loginRoot);
       }else if (response.statusCode == 200) {
         // 401 상태 코드를 받았을 때 로그인 페이지로 이동합니다.
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => LoginPage()), // 로그인 페이지로 이동
-        );
+        Get.offAllNamed(MainRoute.mainRoot);
       } else {
         print('서버 응답: ${response.statusCode}');
         showDialog(
@@ -49,7 +42,7 @@ class _InitialPageState extends State<InitialPage> {
           builder: (BuildContext context) {
             return AlertDialog(
               title: const Text('Error'),
-              content: const Text('API 요청이 실패하였습니다.'),
+              content: const Text('네트워크 요청이 실패하였습니다.'),
               actions: [
                 TextButton(
                   onPressed: () {
@@ -71,9 +64,7 @@ class _InitialPageState extends State<InitialPage> {
         print('에러: $error');
       }
     } finally {
-      setState(() {
-        _isLoading = false;
-      });
+      _urlController.isLoading.value = false;
     }
   }
 
@@ -82,11 +73,11 @@ class _InitialPageState extends State<InitialPage> {
     return Scaffold(
       appBar:CustomAppBar(themeData: Theme.of(context),),
       body: Center(
-        child: _isLoading
+        child: _urlController.isLoading.value
             ? const CircularProgressIndicator() // API 요청 중에는 로딩 표시를 보여줍니다.
             : ElevatedButton(
           onPressed: _checkApiAndNavigateToMainPage,
-          child: const Text('API 확인 후 메인 페이지로 이동'),
+          child: const Text('네트워크 요청 재시도'),
         ),
       ),
     );

@@ -6,25 +6,25 @@ import 'package:webview_flutter/webview_flutter.dart';
 import '../ui/bar/custom_appbar.dart';
 import 'package:http/http.dart' as http;
 
-class LoginWebview extends StatefulWidget {
-  const LoginWebview({super.key});
+class LoginWebView extends StatefulWidget {
+  const LoginWebView({super.key});
 
   @override
-  _LoginWebviewState createState() => _LoginWebviewState();
+  _LoginWebViewState createState() => _LoginWebViewState();
 }
 
-class _LoginWebviewState extends State<LoginWebview> {
+class _LoginWebViewState extends State<LoginWebView> {
 
 
   late WebViewController _webViewController;
   final cookieManager = WebviewCookieManager();
-  final String initialUrl = 'http://172.18.32.138:9000/login';
+  final String initialUrl = 'http://192.168.219.171:9000/login';
 
   // 로그인 성공 후 리다이렉트 될 URL의 호스트를 변경할 함수
   String changeRedirectHost(String originalUrl) {
     // 로그인 성공 후 리다이렉트 될 URL에서 호스트를 172.18.35.233로 변경
     Uri originalUri = Uri.parse(originalUrl);
-    Uri modifiedUri = originalUri.replace(host: '172.18.32.138');
+    Uri modifiedUri = originalUri.replace(host: '192.168.219.171');
     return modifiedUri.toString();
   }
 

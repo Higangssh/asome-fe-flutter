@@ -107,12 +107,12 @@ class LoginPage extends StatelessWidget {
 }
 void _GoogleRequest(BuildContext context) async {
   try {
-    var response = await http.get(Uri.parse('http://172.18.32.138:9000/test')); // 예시 URL로 변경
+    var response = await http.get(Uri.parse('http://192.168.219.171:9000/test')); // 예시 URL로 변경
     if (response.statusCode == 200) {
       // 성공적으로 요청을 보냈을 때의 처리
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => LoginWebview()), // 로그인 페이지로 이동
+        MaterialPageRoute(builder: (context) => LoginWebView()), // 로그인 페이지로 이동
       );
       print('요청이 성공적으로 보내졌습니다.');
 
