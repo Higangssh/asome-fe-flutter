@@ -1,5 +1,6 @@
 import 'package:asome/controller/url_token_controller.dart';
 import 'package:asome/route/main_route.dart';
+import 'package:asome/service/api_login_service.dart';
 import 'package:asome/ui/bar/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -10,6 +11,7 @@ class LoginPage extends GetView<UrlTokenController> {
 
   @override
   Widget build(BuildContext context) {
+    final ApiLoginService loginService= ApiLoginService(controller);
     return Scaffold(
       appBar: CustomAppBar(themeData: Theme.of(context),),
       body: Column(
@@ -36,7 +38,7 @@ class LoginPage extends GetView<UrlTokenController> {
                         'access-token': controller.accessToken.value,
                         'refresh-token': controller.refreshToken.value
                     };
-                    _googleRequest(context,controller.url.value,headers);
+                    loginService.googleRequest(context,controller.url.value,headers);
                   },
                   style: TextButton.styleFrom(
                     shape: RoundedRectangleBorder(
@@ -114,20 +116,5 @@ class LoginPage extends GetView<UrlTokenController> {
     );
   }
 }
-void _googleRequest(BuildContext context,String url, headers) async {
-  try {
-    var response = await http.get(Uri.parse('$url/test'),headers: headers); // 예시 URL로 변경
-    if (response.statusCode == 200) {
-      // 성공적으로 요청을 보냈을 때의 처리
-     Get.offAllNamed(MainRoute.loginWebView);
-      print('요청이 성공적으로 보내졌습니다.');
 
-    } else {
-      // 요청이 실패했을 때의 처리
-      print('요청 실패: ${response.statusCode}');
-    }
-  } catch (e) {
-    // 예외 처리
-    print('오류: $e');
-  }
-}
+

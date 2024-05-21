@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:js';
-
 import 'package:asome/controller/url_token_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -9,11 +7,11 @@ import 'package:http/http.dart' as http;
 
 import '../route/main_route.dart';
 
-class ApiService{
+class ApiInitialService{
 
   final UrlTokenController controller;
 
-  ApiService(this.controller,);
+  ApiInitialService(this.controller,);
 
 
 

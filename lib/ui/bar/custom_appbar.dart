@@ -1,6 +1,7 @@
 import 'package:asome/route/main_route.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
@@ -14,7 +15,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: const Text('Asome'),
+      title: Text('ASome',
+        style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: HexColor("FF74B1"),
+        ),),
       titleTextStyle: const TextStyle(
         fontWeight: FontWeight.bold,
         fontSize: 24

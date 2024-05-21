@@ -1,8 +1,11 @@
-import 'package:asome/ui/page/main_page.dart';
+import 'package:asome/route/main_route.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:webview_cookie_manager/webview_cookie_manager.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import '../controller/url_token_controller.dart';
 import '../ui/bar/custom_appbar.dart';
 import 'package:http/http.dart' as http;
 
@@ -18,18 +21,19 @@ class _LoginWebViewState extends State<LoginWebView> {
 
   late WebViewController _webViewController;
   final cookieManager = WebviewCookieManager();
-  final String initialUrl = 'http://192.168.219.171:9000/login';
 
   // 로그인 성공 후 리다이렉트 될 URL의 호스트를 변경할 함수
-  String changeRedirectHost(String originalUrl) {
+  String changeRedirectHost(String originalUrl, String modifyUrl) {
     // 로그인 성공 후 리다이렉트 될 URL에서 호스트를 172.18.35.233로 변경
     Uri originalUri = Uri.parse(originalUrl);
-    Uri modifiedUri = originalUri.replace(host: '192.168.219.171');
+    Uri modifiedUri = originalUri.replace(host: modifyUrl);
     return modifiedUri.toString();
   }
 
   @override
   Widget build(BuildContext context) {
+    final UrlTokenController urlTokenController = Get.find<UrlTokenController>();
+    final String initialUrl = '${urlTokenController.url.value}/login';
     return Scaffold(
       appBar: CustomAppBar(themeData: Theme.of(context),),
       body: SafeArea(
@@ -45,7 +49,7 @@ class _LoginWebViewState extends State<LoginWebView> {
             // 로그인 성공 후에만 처리
             if (request.url.contains('http://localhost:9000/login/oauth2/code/google?state')) {
               // 리다이렉트될 URL의 호스트를 변경하여 이동
-              String modifiedUrl = changeRedirectHost(request.url);
+              String modifiedUrl = changeRedirectHost(request.url, urlTokenController.modifyUrl);
               _webViewController.loadUrl(modifiedUrl);
               return NavigationDecision.prevent;
             }
@@ -61,12 +65,9 @@ class _LoginWebViewState extends State<LoginWebView> {
               for (var item in gotCookies) {
                 print(item);
                 if (item.name == 'access-token') {
-                  // 쿠키를 저장
-                  final prefs = await SharedPreferences.getInstance();
-                  await prefs.setString('access-token', item.value);
+                  await urlTokenController.setAccessToken(item.value);
                 }else if(item.name == 'refresh-token'){
-                  final prefs = await SharedPreferences.getInstance();
-                  await prefs.setString('refresh-token', item.value);
+                  await urlTokenController.setRefreshToken(item.value);
                 }
               }
               //await cookieManager.clearCookies();
@@ -74,10 +75,12 @@ class _LoginWebViewState extends State<LoginWebView> {
 
             });
             if (statusCode == 201) {
-              // 응답 코드가 302일 경우에만 MainPage로 이동
+              // 응답 코드가 201일 경우에만 MainPage로 이동
               if (mounted) {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const MainPage()));
+                Get.offAllNamed(MainRoute.mainRoot);
               }
+            }else if(statusCode == 401){
+              Get.offAllNamed(MainRoute.loginRoot);
             }
           },
 

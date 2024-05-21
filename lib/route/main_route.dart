@@ -15,7 +15,7 @@ class MainRoute{
   static List<GetPage> pages =[
     GetPage(name: intialRoot , page : ()=> const InitialPage(), binding: MainBind()),
     GetPage(name: loginRoot, page: ()=> LoginPage()),
-    GetPage(name: mainRoot, page: ()=> const MainPage()),
+    GetPage(name: mainRoot, page: ()=>  MainPage()),
     GetPage(name: loginWebView, page: ()=>LoginWebView())
   ];
 }
