@@ -1,9 +1,13 @@
+import 'package:asome/controller/url_token_controller.dart';
+import 'package:asome/route/main_route.dart';
 import 'package:asome/ui/bar/custom_appbar.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import '../../webview/login_webview.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends GetView<UrlTokenController> {
+  const LoginPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +31,12 @@ class LoginPage extends StatelessWidget {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    _GoogleRequest(context);
+                    var headers = <String, String>{
+                      if (controller.accessToken.value.isNotEmpty && controller.refreshToken.value.isNotEmpty)
+                        'access-token': controller.accessToken.value,
+                        'refresh-token': controller.refreshToken.value
+                    };
+                    _googleRequest(context,controller.url.value,headers);
                   },
                   style: TextButton.styleFrom(
                     shape: RoundedRectangleBorder(
@@ -105,15 +114,12 @@ class LoginPage extends StatelessWidget {
     );
   }
 }
-void _GoogleRequest(BuildContext context) async {
+void _googleRequest(BuildContext context,String url, headers) async {
   try {
-    var response = await http.get(Uri.parse('http://192.168.219.171:9000/test')); // 예시 URL로 변경
+    var response = await http.get(Uri.parse('$url/test'),headers: headers); // 예시 URL로 변경
     if (response.statusCode == 200) {
       // 성공적으로 요청을 보냈을 때의 처리
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => LoginWebView()), // 로그인 페이지로 이동
-      );
+     Get.offAllNamed(MainRoute.loginWebView);
       print('요청이 성공적으로 보내졌습니다.');
 
     } else {

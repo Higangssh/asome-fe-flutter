@@ -1,5 +1,6 @@
-import 'package:asome/ui/page/initial_page.dart';
+import 'package:asome/route/main_route.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
@@ -23,10 +24,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       leading: IconButton(
         icon: const Icon(Icons.home), // 홈 버튼 아이콘
         onPressed: () {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => InitialPage()), // 로그인 페이지로 이동
-          );
+            Get.offAllNamed(MainRoute.intialRoot) ;// intial page로이동
         },
       ),
     );

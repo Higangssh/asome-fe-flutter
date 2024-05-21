@@ -1,63 +1,39 @@
 import 'dart:convert';
+import 'dart:js';
 
 import 'package:asome/controller/url_token_controller.dart';
-import 'package:asome/route/main_route.dart';
-import 'package:asome/ui/bar/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:http/http.dart' as http;
 
+import '../route/main_route.dart';
 
-class InitialPage extends StatefulWidget {
-  const InitialPage({super.key});
+class ApiService{
 
-  @override
-  _InitialPageState createState() => _InitialPageState();
-}
+  final UrlTokenController controller;
 
-class _InitialPageState extends State<InitialPage> {
-  late UrlTokenController _urlTokenController;
+  ApiService(this.controller,);
 
-  @override
-  void initState() {
-    super.initState();
-    _urlTokenController= Get.find<UrlTokenController>();
-    print('access: ${_urlTokenController.accessToken.value}');
-    _checkApiAndNavigateToMainPage();
-  }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar:CustomAppBar(themeData: Theme.of(context),),
-      body: Center(
-        child: _urlTokenController.isLoading.value
-            ? const CircularProgressIndicator() // API 요청 중에는 로딩 표시를 보여줍니다.
-            : ElevatedButton(
-          onPressed: _checkApiAndNavigateToMainPage,
-          child: const Text('네트워크 요청 재시도'),
-        ),
-      ),
-    );
-  }
 
-  Future<void> _checkApiAndNavigateToMainPage() async {
+  Future<void> checkApiAndNavigateToMainPage(BuildContext context) async {
 
-    _urlTokenController.isLoading.value = true;
-
+    controller.isLoading.value = true;
     try {
-      var headers = <String, String>{
-        if (_urlTokenController.accessToken.value.isNotEmpty && _urlTokenController.refreshToken.value.isNotEmpty)
-          'access-token': _urlTokenController.accessToken.value,
-          'refresh-token':_urlTokenController.refreshToken.value
-      };
-      var response = await http.get(Uri.parse("${_urlTokenController.url.value}/api/access"),headers: headers);
+      var headers = <String, String>{};
+      if (controller.accessToken.value.isNotEmpty && controller.refreshToken.value.isNotEmpty) {
+        headers['access-token'] = controller.accessToken.value;
+        headers['refresh-token'] = controller.refreshToken.value;
+      }
+      var response = await http.get(Uri.parse("${controller.url.value}/api/access"),headers: headers);
+
       if (response.statusCode == 404) {
         //404 일경우 로그인 페이지로 이동
         Get.offAllNamed(MainRoute.loginRoot);
       }else if (response.statusCode == 401) {
         // 401 상태 코드를 받았을 때 refresh 를 통해 access 재발급 받는 페이지로 요청
-        accessRequestFromRefresh(context, _urlTokenController.url.value,headers);
+       await accessRequestFromRefresh(context, controller.url.value,headers);
       }
       else if (response.statusCode == 200) {
         // 200 상태 코드를 받았을 때 메인 페이지로 이동
@@ -79,7 +55,7 @@ class _InitialPageState extends State<InitialPage> {
                 ),
               ],
             );
-          },
+         },
         );
       }
     } catch (error) {
@@ -91,11 +67,11 @@ class _InitialPageState extends State<InitialPage> {
         print('에러: $error');
       }
     } finally {
-      _urlTokenController.isLoading.value = false;
+      controller.isLoading.value = false;
     }
   }
 
-  void accessRequestFromRefresh(BuildContext context,String url, headers) async {
+  Future<void> accessRequestFromRefresh(BuildContext context,String url, headers) async {
     try {
       // headers에서 refresh-token 값을 가져옴
       String? refreshToken = headers['refresh-token'];
@@ -112,7 +88,7 @@ class _InitialPageState extends State<InitialPage> {
       if (response.statusCode == 200) {
         // 성공적으로 요청을 보냈을 때의 처리
         final newAccessJws = response.body;
-        await _urlTokenController.setAccessToken(newAccessJws);
+        await controller.setAccessToken(newAccessJws);
         Get.offAllNamed(MainRoute.mainRoot);
         print('요청이 성공적으로 보내졌습니다.');
       } else if(response.statusCode == 401) {
