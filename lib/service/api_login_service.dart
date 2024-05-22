@@ -12,7 +12,7 @@ class ApiLoginService{
 
   Future<void> googleRequest(BuildContext context, String url, Map<String, String> headers) async {
     try {
-      var response = await http.get(Uri.parse('$url/test'), headers: headers);
+      var response = await http.get(Uri.parse('$url/api/login'), headers: headers);
       if (response.statusCode == 200) {
         Get.offAllNamed(MainRoute.loginWebView);
         print('요청이 성공적으로 보내졌습니다.');

@@ -2,8 +2,8 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UrlTokenController extends GetxController{
-  var url = "http://172.18.40.255:9000".obs;
-  var modifyUrl ="172.18.40.255";
+  var url = "http://172.30.1.16:9000".obs;
+  var modifyUrl ="172.30.1.16";
   var isLoading = false.obs;
   var accessToken = "".obs;
   var refreshToken = "".obs;

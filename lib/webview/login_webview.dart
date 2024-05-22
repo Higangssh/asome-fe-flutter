@@ -2,7 +2,6 @@ import 'package:asome/route/main_route.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:webview_cookie_manager/webview_cookie_manager.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import '../controller/url_token_controller.dart';
@@ -77,7 +76,7 @@ class _LoginWebViewState extends State<LoginWebView> {
             if (statusCode == 201) {
               // 응답 코드가 201일 경우에만 MainPage로 이동
               if (mounted) {
-                Get.offAllNamed(MainRoute.mainRoot);
+                Get.offAllNamed(MainRoute.intialRoot);
               }
             }else if(statusCode == 401){
               Get.offAllNamed(MainRoute.loginRoot);

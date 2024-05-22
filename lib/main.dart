@@ -2,7 +2,6 @@ import 'package:asome/controller/url_token_controller.dart';
 import 'package:asome/route/main_route.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hexcolor/hexcolor.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,7 +21,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: MainRoute.intialRoot,
+      initialRoute: MainRoute.inputFormRoot,
       getPages: MainRoute.pages,
       theme: ThemeData(
         primaryColor: Colors.white,
