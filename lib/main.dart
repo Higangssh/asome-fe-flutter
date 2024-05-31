@@ -21,9 +21,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: MainRoute.inputFormRoot,
+      initialRoute: MainRoute.mainRoot,
       getPages: MainRoute.pages,
       theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
         primaryColor: Colors.white,
       ),
     );

@@ -20,14 +20,16 @@ class ApiInitialService{
     controller.isLoading.value = true;
     try {
       var headers = <String, String>{};
-      if (controller.accessToken.value.isNotEmpty && controller.refreshToken.value.isNotEmpty) {
-        headers['access-token'] = controller.accessToken.value;
-        headers['refresh-token'] = controller.refreshToken.value;
-      }
+      headers['access-token'] = controller.accessToken.value;
+      headers['refresh-token'] = controller.refreshToken.value;
+      print("accees-token: ${controller.accessToken.value} ");
+      print("refresh-token: ${controller.refreshToken.value} ");
       var response = await http.get(Uri.parse("${controller.url.value}/api/access"),headers: headers);
 
       if (response.statusCode == 404) {
         //404 일경우 로그인 페이지로 이동
+        Get.offAllNamed(MainRoute.loginRoot);
+      }else if (response.statusCode == 403){
         Get.offAllNamed(MainRoute.loginRoot);
       }else if (response.statusCode == 401) {
         // 401 상태 코드를 받았을 때 refresh 를 통해 access 재발급 받는 페이지로 요청

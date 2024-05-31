@@ -1,23 +1,26 @@
-
-
 import 'package:asome/ui/bar/custom_appbar.dart';
+import 'package:asome/ui/bar/custom_bottombar.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
-
+import '../../controller/group_controller.dart';
+import '../dialog/create_group_dialog.dart';
 class MainPage extends StatelessWidget {
   const MainPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(themeData: Theme.of(context),),
+      appBar: CustomAppBar(themeData: Theme.of(context)),
+      bottomNavigationBar: CustomBottomBar(),
       body: Container(
         decoration: const BoxDecoration(
-            border: Border(
-              top: BorderSide(
-                color: Colors.grey,
-                width: 1.0, // 보더의 두께
-              ),
+          border: Border(
+            top: BorderSide(
+              color: Colors.grey,
+              width: 1.0, // 보더의 두께
             ),
+          ),
         ),
         child: SingleChildScrollView(
           child: Padding(
@@ -58,12 +61,11 @@ class MainPage extends StatelessWidget {
                         offset: Offset(0, 3),
                       ),
                     ],
-
                   ),
                   child: const Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                       Text(
+                      Text(
                         '현재 매칭 진행 현황',
                         style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                       ),
@@ -77,15 +79,27 @@ class MainPage extends StatelessWidget {
                     ],
                   ),
                 ),
-            const SizedBox(height: 20),
-              const SizedBox(height: 10),
-              _buildGridItem(Icons.favorite, '매칭', '그룹과 매칭하세요'),
+                const SizedBox(height: 20),
                 const SizedBox(height: 10),
-              _buildGridItem(Icons.group_add, '그룹 만들기', '새로운 그룹을 만드세요'),
-              const SizedBox(height: 10),
-              _buildGridItem(Icons.group, '그룹 조회', '기존 그룹을 조회하세요'),
-              const SizedBox(height: 10),
-              _buildGridItem(Icons.support_agent, '고객센터', '문의사항을 남기세요'),
+                _buildGridItem(Icons.favorite, '매칭', '그룹과 매칭하세요', () {
+                  // 매칭 버튼 클릭 시 동작 정의
+                  print("매칭 버튼 클릭됨");
+                }),
+                const SizedBox(height: 10),
+                _buildGridItem(Icons.group_add, '그룹 만들기', '새로운 그룹을 만드세요', () {
+                  // 그룹 만들기 버튼 클릭 시 동작 정의
+                  showCreateGroupDialog(context);
+                }),
+                const SizedBox(height: 10),
+                _buildGridItem(Icons.group, '그룹 조회', '기존 그룹을 조회하세요', () {
+                  // 그룹 조회 버튼 클릭 시 동작 정의
+                  print("그룹 조회 버튼 클릭됨");
+                }),
+                const SizedBox(height: 10),
+                _buildGridItem(Icons.support_agent, '고객센터', '문의사항을 남기세요', () {
+                  // 고객센터 버튼 클릭 시 동작 정의
+                  print("고객센터 버튼 클릭됨");
+                }),
               ],
             ),
           ),
@@ -94,42 +108,58 @@ class MainPage extends StatelessWidget {
     );
   }
 
-  Widget _buildGridItem(IconData icon, String title, String subtitle) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 6,
-            offset: Offset(0, 3),
-          ),
-        ],
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 5),
-                Text(
-                  subtitle,
-                  style: const TextStyle(fontSize: 14, color: Colors.grey),
-                ),
-              ],
+  Widget _buildGridItem(IconData icon, String title, String subtitle, VoidCallback onTap) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: const [
+            BoxShadow(
+              color: Colors.black12,
+              blurRadius: 6,
+              offset: Offset(0, 3),
             ),
-          ),
-          Icon(icon, color:  HexColor("#A3FFD6"), size: 40),
-        ],
+          ],
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    subtitle,
+                    style: const TextStyle(fontSize: 14, color: Colors.grey),
+                  ),
+                ],
+              ),
+            ),
+            Icon(icon, color: HexColor("#00E8C1"), size: 40), //HexColor("#A3FFD6")
+          ],
+        ),
       ),
     );
+  }
+
+  void showCreateGroupDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('그룹 만들기'),
+          content: CreateGroupDialog(),
+        );
+      },
+    ).then((_) {
+    });
   }
 }

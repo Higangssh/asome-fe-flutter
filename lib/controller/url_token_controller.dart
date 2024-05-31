@@ -2,21 +2,18 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UrlTokenController extends GetxController{
-  var url = "http://172.30.1.16:9000".obs;
-  var modifyUrl ="172.30.1.16";
+  var url = "http://172.18.39.71:9000".obs;
+  var modifyUrl ="172.18.39.71";
   var isLoading = false.obs;
   var accessToken = "".obs;
   var refreshToken = "".obs;
 
-  @override
-  void onInit() {
-    super.onInit();
-  }
 
 
   Future<void> loadAccessToken() async {
     final prefs = await SharedPreferences.getInstance();
     accessToken.value = prefs.getString('access-token') ?? "";
+    print("여기오나");
     print(accessToken.value);
   }
   Future<void> loadRefreshToken() async {

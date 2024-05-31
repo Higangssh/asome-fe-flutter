@@ -15,11 +15,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Text('ASome',
-        style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: HexColor("FF74B1"),
-        ),),
+      title: Image.asset(
+        'assets/images/appbar-icon.png', // 로고 이미지 경로
+        height: 150, // 로고의 높이를 조정합니다.
+        width: 150,
+      ),
       titleTextStyle: const TextStyle(
         fontWeight: FontWeight.bold,
         fontSize: 24
@@ -29,7 +29,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       leading: IconButton(
         icon: const Icon(Icons.home), // 홈 버튼 아이콘
         onPressed: () {
-            Get.offAllNamed(MainRoute.intialRoot) ;// intial page로이동
+            Get.offAllNamed(MainRoute.mainRoot) ;// intial page로이동
         },
       ),
     );

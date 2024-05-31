@@ -1,4 +1,7 @@
 import 'package:asome/bind/main_bind.dart';
+import 'package:asome/model/dto/chatroomdto.dart';
+import 'package:asome/ui/page/chat_page.dart';
+import 'package:asome/ui/page/chat_room_page.dart';
 import 'package:asome/ui/page/initial_page.dart';
 import 'package:asome/ui/page/input_page.dart';
 import 'package:asome/ui/page/login_page.dart';
@@ -13,12 +16,14 @@ class MainRoute{
   static const String mainRoot = "/main";
   static const String loginWebView = "/login/webview";
   static const String inputFormRoot = "/form";
+  static const String chatRoomListRoot = "/chat/room";
 
   static List<GetPage> pages =[
     GetPage(name: intialRoot , page : ()=> const InitialPage(), binding: MainBind()),
     GetPage(name: loginRoot, page: ()=> LoginPage()),
-    GetPage(name: mainRoot, page: ()=>  MainPage()),
+    GetPage(name: mainRoot, page: ()=>  MainPage() ,binding: MainBind()),
     GetPage(name: loginWebView, page: ()=> LoginWebView()),
-    GetPage(name: inputFormRoot, page: ()=> FormPage())
+    GetPage(name: inputFormRoot, page: ()=> FormPage()),
+    GetPage(name: chatRoomListRoot, page: ()=> ChatRoomListPage()),
   ];
 }
