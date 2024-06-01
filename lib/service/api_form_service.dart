@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:asome/model/dto/memberdto.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 import '../controller/url_token_controller.dart';
 
 class ApiFormService{

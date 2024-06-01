@@ -8,7 +8,7 @@ class MainBind extends Bindings{
   void dependencies() {
     Get.put(UrlTokenController());
     Get.put(FormController());
-    Get.put(CreateGroupController());
+    Get.put(GroupController());
   }
 
 }

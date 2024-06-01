@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../../controller/group_controller.dart';
+import '../../model/dto/groupdto.dart';
 import '../dialog/create_group_dialog.dart';
+import '../dialog/group_list_dialog.dart';
 class MainPage extends StatelessWidget {
-  const MainPage({super.key});
-
+  MainPage({super.key});
+  final GroupController controller = Get.find<GroupController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -91,9 +93,9 @@ class MainPage extends StatelessWidget {
                   showCreateGroupDialog(context);
                 }),
                 const SizedBox(height: 10),
-                _buildGridItem(Icons.group, '그룹 조회', '기존 그룹을 조회하세요', () {
-                  // 그룹 조회 버튼 클릭 시 동작 정의
-                  print("그룹 조회 버튼 클릭됨");
+                _buildGridItem(Icons.group, '그룹 조회', '기존 그룹을 조회하세요', () async {
+                  List<GroupDto> groupList = await controller.getListGroup();
+                  showGroupListDialog(context, groupList);
                 }),
                 const SizedBox(height: 10),
                 _buildGridItem(Icons.support_agent, '고객센터', '문의사항을 남기세요', () {
@@ -150,12 +152,33 @@ class MainPage extends StatelessWidget {
     );
   }
 
+  void showGroupListDialog(BuildContext context, List<GroupDto> groups) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return GroupListDialog(groups: groups);
+      },
+    );
+  }
+  
+  
   void showCreateGroupDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('그룹 만들기'),
+        return  AlertDialog(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text('그룹 생성', style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
+                fontSize: 16.0,
+              ),),
+              const SizedBox(width: 10,),
+              Icon(Icons.group_add ,color: HexColor("#00E8C1") ,),
+            ],
+          ),
           content: CreateGroupDialog(),
         );
       },

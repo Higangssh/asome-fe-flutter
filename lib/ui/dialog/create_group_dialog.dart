@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hexcolor/hexcolor.dart';
 import '../../controller/group_controller.dart';
 
 class CreateGroupDialog extends StatelessWidget {
@@ -7,61 +8,87 @@ class CreateGroupDialog extends StatelessWidget {
     '서울', '경기', '인천', '강원', '충북', '충남', '대전', '세종', '경북', '경남', '대구', '부산', '울산', '전북', '전남', '광주', '제주'
   ];
 
+  CreateGroupDialog({super.key});
+
   @override
   Widget build(BuildContext context) {
-    final CreateGroupController createGroupController = Get.find<CreateGroupController>();
+    final GroupController groupController = Get.find<GroupController>();
     final TextEditingController locationController = TextEditingController();
 
     // locationController에 초기 값 설정
-    locationController.text = createGroupController.groupLocation.value;
+    locationController.text = groupController.groupLocation.value;
 
     return SingleChildScrollView(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
          TextField(
+            cursorColor: Colors.black54 ,
             onChanged: (value) {
-              createGroupController.setGroupName(value);
+              groupController.setGroupName(value);
             },
             decoration: const InputDecoration(
               labelText: '그룹 이름',
+              labelStyle: TextStyle(color: Colors.black45),
               hintText: '그룹 이름을 입력하세요',
+              hintStyle: TextStyle(color: Colors.black45),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.black87), // 포커스된 상태에서의 언더라인 색상 지정
+              ),
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey), // 기본 언더라인 색상 지정
+              ),
             ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 10),
           GestureDetector(
-            onTap: () => _showLocationPicker(context, createGroupController, locationController),
+            onTap: () => _showLocationPicker(context, groupController, locationController),
             child: AbsorbPointer(
               child: TextFormField(
                 controller: locationController,
                 decoration: const InputDecoration(
-                  labelText: '그룹 위치를 선택하세요',
+                  labelText: '그룹 위치',
+                  labelStyle: TextStyle(color: Colors.black45),
                   hintText: '그룹 위치를 선택하세요',
+                  hintStyle: TextStyle(color: Colors.black45),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black87), // 포커스된 상태에서의 언더라인 색상 지정
+                  ),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey), // 기본 언더라인 색상 지정
+                  ),
                 ),
               ),
             ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 40),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              ElevatedButton(
-                onPressed: () {
-                  createGroupController.createGroup();
-                  locationController.dispose();
-                  Navigator.of(context).pop(); // 다이얼로그 닫기
-                },
-                child: const Text('그룹 만들기'),
-              ),
               ElevatedButton(
                 onPressed: () {
                   locationController.dispose();
                   Navigator.of(context).pop(); // 다이얼로그 닫기
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.grey,
+                    backgroundColor: Colors.redAccent
                 ),
-                child: const Text('취소'),
+                child: const Text('취소', style: TextStyle(
+                  color: Colors.white
+                ),),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  groupController.createGroup();
+                  locationController.dispose();
+                  Navigator.of(context).pop(); // 다이얼로그 닫기
+                },
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: HexColor("#00E8C1")
+                ),
+                child: const Text('그룹 생성', style: TextStyle(
+                    color: Colors.white,
+                ),),
               ),
             ],
           ),
@@ -70,7 +97,7 @@ class CreateGroupDialog extends StatelessWidget {
     );
   }
 
-  void _showLocationPicker(BuildContext context, CreateGroupController controller, TextEditingController locationController) {
+  void _showLocationPicker(BuildContext context, GroupController controller, TextEditingController locationController) {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {

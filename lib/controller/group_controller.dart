@@ -1,8 +1,11 @@
 
+import 'package:asome/model/dto/groupdto.dart';
+import 'package:asome/service/api_group_service.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
-class CreateGroupController extends GetxController {
+class GroupController extends GetxController {
+  final ApiGroupService apiGroupService = ApiGroupService();
   var groupName = ''.obs;
   var groupLocation = ''.obs;
 
@@ -14,11 +17,24 @@ class CreateGroupController extends GetxController {
     groupLocation.value = location;
   }
 
-  void createGroup() {
+  void createGroup() async{
     // 그룹 생성 로직 추가
     print('그룹 이름: ${groupName.value}');
     print('그룹 위치: ${groupLocation.value}');
-    // 이후 로직 예: 서버에 그룹 생성 요청 등
+    await apiGroupService.createGroup(GroupDto(
+      groupName: groupName.value,
+      groupLoc: groupLocation.value,
+    ));
+  }
+
+  Future<List<GroupDto>> getListGroup() async {
+    try {
+      List<GroupDto> dto = await apiGroupService.requestGroupList();
+      return dto;
+    } catch (e) {
+      print("Error getting group list: $e");
+      return [];
+    }
   }
 
   @override

@@ -10,6 +10,7 @@ Future<void> main() async {
   // 액세스 토큰과 리프레시 토큰 로딩
   await urlTokenController.loadAccessToken();
   await urlTokenController.loadRefreshToken();
+  await urlTokenController.loadGender();
 
   runApp(const MyApp());
 }
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: MainRoute.mainRoot,
+      initialRoute: MainRoute.intialRoot,
       getPages: MainRoute.pages,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),

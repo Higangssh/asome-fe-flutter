@@ -30,13 +30,13 @@ class ChatPage extends StatelessWidget {
                 Expanded(
                   child: TextField(
                     controller: _controller,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       hintText: 'Enter message',
                     ),
                   ),
                 ),
                 IconButton(
-                  icon: Icon(Icons.send),
+                  icon: const Icon(Icons.send),
                   onPressed: () {
                     if (_controller.text.isNotEmpty) {
                       final chatRoomController = Get.find<ChatRoomController>();

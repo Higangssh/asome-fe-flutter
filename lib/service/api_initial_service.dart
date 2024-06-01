@@ -33,7 +33,7 @@ class ApiInitialService{
         Get.offAllNamed(MainRoute.loginRoot);
       }else if (response.statusCode == 401) {
         // 401 상태 코드를 받았을 때 refresh 를 통해 access 재발급 받는 페이지로 요청
-       await accessRequestFromRefresh(context, controller.url.value,headers);
+       await accessRequestFromRefresh(controller.url.value,headers);
       }else if (response.statusCode == 200) {
         // 200 상태 코드를 받았을 때 메인 페이지로 이동
         Get.offAllNamed(MainRoute.mainRoot);
@@ -72,7 +72,7 @@ class ApiInitialService{
     }
   }
 
-  Future<void> accessRequestFromRefresh(BuildContext context,String url, headers) async {
+  Future<void> accessRequestFromRefresh(String url, headers) async {
     try {
       // headers에서 refresh-token 값을 가져옴
       String? refreshToken = headers['refresh-token'];

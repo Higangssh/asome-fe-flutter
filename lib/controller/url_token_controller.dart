@@ -2,18 +2,27 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UrlTokenController extends GetxController{
-  var url = "http://172.18.39.71:9000".obs;
-  var modifyUrl ="172.18.39.71";
+  var url = "http://172.30.1.16:9000".obs;
+  var modifyUrl ="172.30.1.16";
   var isLoading = false.obs;
   var accessToken = "".obs;
   var refreshToken = "".obs;
+  var gender = "".obs;
 
+  Map<String, String> createHeaders() {
+    var headers = <String, String>{};
+    headers['Content-Type'] = 'application/json';
+    if (accessToken.value.isNotEmpty && refreshToken.value.isNotEmpty) {
+      headers['access-token'] = accessToken.value;
+      headers['refresh-token'] = refreshToken.value;
+    }
+    return headers;
+  }
 
 
   Future<void> loadAccessToken() async {
     final prefs = await SharedPreferences.getInstance();
     accessToken.value = prefs.getString('access-token') ?? "";
-    print("여기오나");
     print(accessToken.value);
   }
   Future<void> loadRefreshToken() async {
@@ -22,10 +31,22 @@ class UrlTokenController extends GetxController{
     print(refreshToken.value);
   }
 
+  Future<void> loadGender() async {
+    final prefs = await SharedPreferences.getInstance();
+    gender.value = prefs.getString('gender') ?? "";
+    print(gender.value);
+  }
+
   Future<void> setAccessToken(String token) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('access-token', token);
     accessToken.value = token;
+  }
+
+  Future<void> setGender(String gen) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('gender', gen);
+    gender.value = gen;
   }
 
   void clearAccessToken() async {
