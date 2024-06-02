@@ -56,7 +56,7 @@ class _MainPageState extends State<MainPage> {
                   child: Row(
                     children: [
                       Icon(Icons.notifications, color: HexColor("#00E8C1")),
-                      const SizedBox(width: 1g0,),
+                      const SizedBox(width: 10,),
                       Expanded(
                         child: Obx(() {
                           return AnimatedSwitcher(
