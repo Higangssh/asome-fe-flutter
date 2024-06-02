@@ -75,7 +75,7 @@ class ApiGroupService {
     }else if(response.statusCode == 401){
       print("응답코드는: ${response.statusCode}");
       Get.snackbar(
-        '그룹 조회에 실패 했습니다',
+        '일시적인 오류로 실패 했습니다',
         '잠시 후 다시 시도 해주세요',
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.red,
@@ -96,6 +96,45 @@ class ApiGroupService {
     return [];
 
   }
+
+
+  Future<GroupDto> requestGroupDetails(int groupId) async {
+    final String url =  "${_controller.url.value}/api/group/detail/$groupId";
+    var headers = _controller.createHeaders();
+
+      final response = await http.get(
+        Uri.parse(url),
+        headers: headers,
+      );
+      if (response.statusCode == 200) {
+        print("JSON Body: ${jsonDecode(response.body)}");
+        GroupDto dto =GroupDto.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
+        return dto;
+      }else if(response.statusCode == 401){
+        print("응답코드는: ${response.statusCode}");
+        Get.snackbar(
+          '일시적인 오류로 실패 했습니다',
+          '잠시 후 다시 시도 해주세요',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+        apiInitialService.accessRequestFromRefresh(_controller.url.value, headers);
+        throw Exception('Failed to group detail');
+      } else {
+        Get.snackbar(
+          '그룹 상세 페이지 조회가 실패했습니다',
+          '잠시 후 다시 시도 해주세요',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+        throw Exception('Failed to group detail');
+      }
+
+  }
+
+
 
 
 }

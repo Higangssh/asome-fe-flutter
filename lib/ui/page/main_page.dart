@@ -7,9 +7,25 @@ import '../../controller/group_controller.dart';
 import '../../model/dto/groupdto.dart';
 import '../dialog/create_group_dialog.dart';
 import '../dialog/group_list_dialog.dart';
-class MainPage extends StatelessWidget {
+import '../../controller/message_controller.dart';
+
+class MainPage extends StatefulWidget {
   MainPage({super.key});
+
+  @override
+  _MainPageState createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
   final GroupController controller = Get.find<GroupController>();
+  final MessageController messageController = Get.put(MessageController());
+
+  @override
+  void dispose() {
+    Get.delete<MessageController>(); // MessageController를 삭제하여 메모리 해제
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +36,7 @@ class MainPage extends StatelessWidget {
           border: Border(
             top: BorderSide(
               color: Colors.grey,
-              width: 1.0, // 보더의 두께
+              width: 1.0,
             ),
           ),
         ),
@@ -37,15 +53,27 @@ class MainPage extends StatelessWidget {
                     color: Colors.blue[50],
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: const Row(
+                  child: Row(
                     children: [
-                      Icon(Icons.receipt, color: Colors.green),
-                      SizedBox(width: 10),
+                      Icon(Icons.notifications, color: HexColor("#00E8C1")),
+                      const SizedBox(width: 1g0,),
                       Expanded(
-                        child: Text(
-                          '매칭을 진행해 보세요!',
-                          style: TextStyle(fontSize: 16),
-                        ),
+                        child: Obx(() {
+                          return AnimatedSwitcher(
+                            duration: const Duration(milliseconds: 500),
+                            transitionBuilder: (Widget child, Animation<double> animation) {
+                              return FadeTransition(opacity: animation, child: child);
+                            },
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                messageController.currentMessage,
+                                key: ValueKey<String>(messageController.currentMessage),
+                                style: const TextStyle(fontSize: 16),
+                              ),
+                            ),
+                          );
+                        }),
                       ),
                     ],
                   ),
@@ -145,7 +173,7 @@ class MainPage extends StatelessWidget {
                 ],
               ),
             ),
-            Icon(icon, color: HexColor("#00E8C1"), size: 40), //HexColor("#A3FFD6")
+            Icon(icon, color: HexColor("#00E8C1"), size: 40),
           ],
         ),
       ),
@@ -160,29 +188,30 @@ class MainPage extends StatelessWidget {
       },
     );
   }
-  
-  
+
   void showCreateGroupDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return  AlertDialog(
+        return AlertDialog(
           title: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text('그룹 생성', style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.black87,
-                fontSize: 16.0,
-              ),),
-              const SizedBox(width: 10,),
-              Icon(Icons.group_add ,color: HexColor("#00E8C1") ,),
+              const Text(
+                '그룹 생성',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
+                  fontSize: 16.0,
+                ),
+              ),
+              const SizedBox(width: 10),
+              Icon(Icons.group_add, color: HexColor("#00E8C1")),
             ],
           ),
           content: CreateGroupDialog(),
         );
       },
-    ).then((_) {
-    });
+    ).then((_) {});
   }
 }

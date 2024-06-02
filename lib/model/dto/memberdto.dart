@@ -1,6 +1,8 @@
 
+import 'dart:ffi';
+
 class MemberDto {
-  String? id;
+  int? id;
   String? email;
   String? nick;
   DateTime? birth;
@@ -40,15 +42,16 @@ class MemberDto {
   // JSON deserialization
   factory MemberDto.fromJson(Map<String, dynamic> json) {
     return MemberDto(
-      id: json['id'] as String?,
+      id: json['id'] as int?,
       email: json['email'] as String?,
       nick: json['nick'] as String?,
       birth: json['birth'] != null ? DateTime.parse(json['birth']) : null,
       universityEmail: json['universityEmail'] as String?,
       universityName: json['universityName'] as String?,
-      gender: json['gender'] as String?,  // 추가된 필드
+      gender: json['gender'] == 'M' ? '남자' : '여자' as String?,  // 추가된 필드
       createAt: json['createAt'] as String?,
       modifiedAt: json['modifiedAt'] as String?,
     );
   }
+
 }

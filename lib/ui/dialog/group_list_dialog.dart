@@ -1,7 +1,11 @@
+import 'package:asome/route/main_route.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../../model/dto/groupdto.dart';
+import '../page/group_detail_page.dart';
 
 class GroupListDialog extends StatelessWidget {
   final List<GroupDto> groups;
@@ -49,8 +53,8 @@ class GroupListDialog extends StatelessWidget {
                       subtitle: Text('참여 수: ${groups[index].total?.toString() ?? 'N/A'}'),
                       trailing: const FaIcon(FontAwesomeIcons.fileSignature, color: Colors.grey),
                       onTap: () {
-                        // 그룹 상세 페이지로 이동
                         Navigator.of(context).pop();
+                        Get.toNamed(MainRoute.groupDetailRoot, arguments: groups[index].id);
                       },
                     );
                   },
