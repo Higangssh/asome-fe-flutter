@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../../controller/group_controller.dart';
-import '../../model/dto/groupdto.dart';
+import '../../model/dto/group_dto.dart';
 import '../dialog/create_group_dialog.dart';
 import '../dialog/group_list_dialog.dart';
 import '../../controller/message_controller.dart';

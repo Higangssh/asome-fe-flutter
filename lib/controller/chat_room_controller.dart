@@ -1,49 +1,28 @@
-import 'package:get/get.dart';
-import '../model/dto/chatroomdto.dart';
-import 'package:http/http.dart' as http;
+
 import 'dart:convert';
-
+import 'package:asome/controller/url_token_controller.dart';
+import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import '../model/dto/chat_list_dto.dart';
 class ChatRoomController extends GetxController {
-  var chatRooms = <ChatRoom>[].obs;
-
+  var chatRooms = <ChatListDto>[].obs;
+  final UrlTokenController _controller = Get.find<UrlTokenController>();
   @override
   void onInit() {
-    super.onInit();
     fetchChatRooms();
+    super.onInit();
   }
 
-  void fetchChatRooms() async {
-    final response = await http.get(Uri.parse('http://example.com/api/chatrooms'));
+  Future<void> fetchChatRooms() async {
+    String baseUrl = "${_controller.url.value}/api/chat/list";
+    final response = await http.get(
+        Uri.parse(baseUrl)
+        ,headers: _controller.createHeaders());
+
     if (response.statusCode == 200) {
-      List<dynamic> data = jsonDecode(response.body);
-      chatRooms.value = data.map((item) => ChatRoom.fromJson(item)).toList();
-      sortChatRooms();
-    } else {
-      // 오류 처리
+      List<dynamic> data = jsonDecode(utf8.decode(response.bodyBytes));
+      chatRooms.value = data.map((chat) => ChatListDto.fromJson(chat)).toList();
     }
-  }
-
-  void updateLastMessage(String roomName, String lastMessage) async {
-    ChatRoom? chatRoom = chatRooms.firstWhereOrNull((room) => room.roomName == roomName);
-    if (chatRoom != null) {
-      final response = await http.post(
-        Uri.parse('http://example.com/api/chatrooms/$roomName/messages'),
-        body: jsonEncode({'message': lastMessage}),
-        headers: {'Content-Type': 'application/json'},
-      );
-
-      if (response.statusCode == 200) {
-        chatRoom.lastMessage = lastMessage;
-        chatRoom.lastMessageTime = DateTime.now();
-        sortChatRooms();
-        chatRooms.refresh();
-      } else {
-        // 오류 처리
-      }
-    }
-  }
-
-  void sortChatRooms() {
-    chatRooms.sort((a, b) => b.lastMessageTime.compareTo(a.lastMessageTime));
   }
 }
+  

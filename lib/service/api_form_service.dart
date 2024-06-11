@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:asome/model/dto/memberdto.dart';
+import 'package:asome/model/dto/member_dto.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import '../controller/url_token_controller.dart';
@@ -112,6 +112,7 @@ class ApiFormService{
        String accessJws =  response.body;
        print("accessJws : $accessJws");
        _controller.setAccessToken(accessJws);
+       _controller.setNick(dto.nick!);
        print('새 엑세스 성공');
     } else {
       print('Request failed with status: ${response.statusCode}.');

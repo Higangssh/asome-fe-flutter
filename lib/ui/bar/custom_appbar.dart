@@ -1,7 +1,6 @@
 import 'package:asome/route/main_route.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hexcolor/hexcolor.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 

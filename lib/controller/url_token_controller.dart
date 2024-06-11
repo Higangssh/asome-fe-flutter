@@ -2,12 +2,14 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UrlTokenController extends GetxController{
-  var url = "http://172.30.1.16:9000".obs;
-  var modifyUrl ="172.30.1.16";
+  var url = "http://172.30.1.75:9000".obs;
+  var webSocketUrl ='ws://172.30.1.75:9000/ws'.obs;
+  var modifyUrl ="172.30.1.75";
   var isLoading = false.obs;
   var accessToken = "".obs;
   var refreshToken = "".obs;
   var gender = "".obs;
+  var nick = "".obs;
 
   Map<String, String> createHeaders() {
     var headers = <String, String>{};
@@ -37,6 +39,11 @@ class UrlTokenController extends GetxController{
     print(gender.value);
   }
 
+  Future<void> loadNick() async{
+    final prefs = await SharedPreferences.getInstance();
+    nick.value = prefs.getString('nick') ?? "";
+  }
+
   Future<void> setAccessToken(String token) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('access-token', token);
@@ -53,6 +60,12 @@ class UrlTokenController extends GetxController{
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('access-token');
     accessToken.value = "";
+  }
+
+  Future<void> setNick(String nickName)async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('nick', nickName);
+    nick.value=nickName;
   }
 
   Future<void> setRefreshToken(String token) async {

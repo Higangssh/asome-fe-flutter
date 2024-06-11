@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
 import '../controller/url_token_controller.dart';
-import '../model/dto/chatroomdto.dart';
+import '../model/dto/chat_room_dto.dart';
 
 class ApiFormService {
   final UrlTokenController _controller = Get.find<UrlTokenController>();

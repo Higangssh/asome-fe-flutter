@@ -7,6 +7,7 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 import '../../controller/group_detail_controller.dart';
+import '../modal/search_bottom_modal.dart';
 
 class GroupDetailPage extends StatelessWidget {
   const GroupDetailPage({super.key, required groupId});
@@ -31,7 +32,7 @@ class GroupDetailPage extends StatelessWidget {
         if (controller.group.value.id == 0) {
           return const Center(child: CircularProgressIndicator());
         } else {
-          return SingleChildScrollView( // 변경된 부분: SingleChildScrollView 추가
+          return SingleChildScrollView( 
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -77,6 +78,7 @@ class GroupDetailPage extends StatelessWidget {
                             icon: const Icon(FontAwesomeIcons.userPlus, size: 20, color: Colors.black54),
                             onPressed: () {
                               // 그룹 추가 기능을 여기에 구현
+                              SearchBottomModal.show(context);
                             },
                           ),
                         ],

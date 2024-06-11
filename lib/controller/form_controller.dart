@@ -1,4 +1,4 @@
-import 'package:asome/model/dto/memberdto.dart';
+import 'package:asome/model/dto/member_dto.dart';
 import 'package:asome/route/main_route.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

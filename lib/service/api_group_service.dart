@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import '../controller/url_token_controller.dart';
-import '../model/dto/groupdto.dart';
+import '../model/dto/group_dto.dart';
 
 class ApiGroupService {
 

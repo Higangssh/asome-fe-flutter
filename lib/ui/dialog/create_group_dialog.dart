@@ -12,7 +12,7 @@ class CreateGroupDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final GroupController groupController = Get.find<GroupController>();
+    final GroupController groupController = Get.put(GroupController());
     final TextEditingController locationController = TextEditingController();
 
     // locationController에 초기 값 설정

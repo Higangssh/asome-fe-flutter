@@ -4,7 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:hexcolor/hexcolor.dart';
-import '../../model/dto/groupdto.dart';
+import '../../model/dto/group_dto.dart';
 import '../page/group_detail_page.dart';
 
 class GroupListDialog extends StatelessWidget {

@@ -1,6 +1,6 @@
 import 'dart:ffi';
 
-import 'memberdto.dart';
+import 'member_dto.dart';
 
 class GroupDto {
   final int? id;

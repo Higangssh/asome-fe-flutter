@@ -11,6 +11,7 @@ Future<void> main() async {
   await urlTokenController.loadAccessToken();
   await urlTokenController.loadRefreshToken();
   await urlTokenController.loadGender();
+  await urlTokenController.loadNick();
 
   runApp(const MyApp());
 }
