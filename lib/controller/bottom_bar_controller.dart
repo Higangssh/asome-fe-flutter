@@ -6,7 +6,9 @@ class BottomBarController extends GetxController {
   var currentIndex = 0.obs;
 
   void changePage(int index) {
+    print(currentIndex.value);
     currentIndex.value = index;
+    print(currentIndex.value);
     switch (index) {
       case 0:
         Get.offAndToNamed(MainRoute.mainRoot); // 홈 페이지로 이동

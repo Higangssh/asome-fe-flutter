@@ -81,6 +81,7 @@ class CreateGroupDialog extends StatelessWidget {
                 onPressed: () {
                   groupController.createGroup();
                   locationController.dispose();
+                  groupController.dispose();
                   Navigator.of(context).pop(); // 다이얼로그 닫기
                 },
                 style: ElevatedButton.styleFrom(

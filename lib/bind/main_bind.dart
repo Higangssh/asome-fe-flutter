@@ -14,7 +14,7 @@ class MainBind extends Bindings{
     Get.put(GroupController());
     Get.put(GroupDetailController());
     Get.lazyPut(() => ChatRoomController());
-    Get.lazyPut(() => BottomBarController());
+    Get.put(BottomBarController(),  permanent: true);
 
   }
 

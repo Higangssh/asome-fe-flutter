@@ -78,7 +78,7 @@ class GroupDetailPage extends StatelessWidget {
                             icon: const Icon(FontAwesomeIcons.userPlus, size: 20, color: Colors.black54),
                             onPressed: () {
                               // 그룹 추가 기능을 여기에 구현
-                              SearchBottomModal.show(context);
+                              SearchBottomModal.show(context , groupId);
                             },
                           ),
                         ],

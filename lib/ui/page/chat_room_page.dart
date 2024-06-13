@@ -5,7 +5,6 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
-
 import '../../controller/chat_room_controller.dart';
 import '../../route/main_route.dart';
 import '../bar/custom_bottombar.dart';
@@ -59,7 +58,6 @@ class ChatRoomListPage extends StatelessWidget {
     if (dateString == null) return 'No Time';
     final date = DateTime.parse(dateString);
     final now = DateTime.now();
-    final today = DateTime(now.year, now.month, now.day);
 
     if (date.year == now.year && date.month == now.month && date.day == now.day) {
       return DateFormat('HH:mm').format(date);

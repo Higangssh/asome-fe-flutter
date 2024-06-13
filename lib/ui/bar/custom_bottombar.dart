@@ -5,7 +5,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../controller/bottom_bar_controller.dart';
 
 class CustomBottomBar extends StatelessWidget {
-  final BottomBarController controller = Get.put(BottomBarController());
+  final BottomBarController controller = Get.find<BottomBarController>();
+
+   CustomBottomBar({super.key});
 
   @override
   Widget build(BuildContext context) {

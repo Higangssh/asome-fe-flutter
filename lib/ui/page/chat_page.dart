@@ -1,6 +1,5 @@
 import 'package:asome/controller/bottom_bar_controller.dart';
 import 'package:asome/controller/url_token_controller.dart';
-import 'package:asome/route/main_route.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -60,6 +59,7 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
     _webSocketController.disconnect();
     _scrollController.dispose();
     _focusNode.dispose();
+    _controller.dispose();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
