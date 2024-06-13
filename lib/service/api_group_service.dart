@@ -16,6 +16,19 @@ class ApiGroupService {
     apiInitialService = ApiInitialService(_controller);
   }
 
+  Future<List<GroupDto>> requestInvitedGroupList() async {
+    String requestUrl= '${_controller.url.value}/api/group/request/list';
+    final response = await http.get(Uri.parse(requestUrl), headers: _controller.createHeaders());
+
+    if (response.statusCode == 200) {
+      List<dynamic> body = jsonDecode(response.body);
+      List<GroupDto> groupRequests = body.map((dynamic item) => GroupDto.fromJson(item)).toList();
+      return groupRequests;
+    } else {
+      throw Exception('Failed to load group requests');
+    }
+  }
+
   Future<void> createGroup(GroupDto dto) async {
     String baseUrl = "${_controller.url.value}/api/group/create";
     var headers = _controller.createHeaders();
@@ -133,6 +146,8 @@ class ApiGroupService {
       }
 
   }
+
+
 
 
 

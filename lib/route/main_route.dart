@@ -11,6 +11,8 @@ import 'package:asome/ui/page/main_page.dart';
 import 'package:asome/webview/login_webview.dart';
 import 'package:get/get.dart';
 
+import '../ui/page/group_request_page.dart';
+
 class MainRoute{
 
   static const String intialRoot ="/";
@@ -22,6 +24,7 @@ class MainRoute{
   static const String groupDetailRoot = "/group/detail";
   static const String chatPage = "/chat/page";
   static const String groupCreateDialog = "/group/create";
+  static const String groupRequestRoot = "/group/request";
 
   static List<GetPage> pages =[
     GetPage(name: intialRoot , page : ()=> const InitialPage(), binding: MainBind()),
@@ -33,5 +36,6 @@ class MainRoute{
     GetPage(name: groupDetailRoot, page: () => GroupDetailPage(groupId: Get.arguments), binding: MainBind(),),
     GetPage(name: chatPage , page:()=> ChatPage(chatRoom: Get.arguments), binding: MainBind()),
     GetPage(name: groupCreateDialog, page: ()=> CreateGroupDialog(), binding: MainBind()),
+    GetPage(name: groupRequestRoot, page: ()=> GroupRequestPage(),binding: MainBind()),
   ];
 }

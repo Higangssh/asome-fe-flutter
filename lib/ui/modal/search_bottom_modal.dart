@@ -134,7 +134,7 @@ class _UserSearchListState extends State<UserSearchList> with WidgetsBindingObse
 
   Future<void> _inviteUser(int groupId, String nick) async {
     final encodedNick = Uri.encodeComponent(nick);
-    final requestUrl = "${urlTokenController.url.value}/api/join/request?groupId=$groupId&nick=$encodedNick";
+    final requestUrl = "${urlTokenController.url.value}/api/group/join/request?groupId=$groupId&nick=$encodedNick";
     final response = await http.get(Uri.parse(requestUrl), headers: urlTokenController.createHeaders());
 
     if (response.statusCode == 200) {

@@ -8,6 +8,13 @@ class GroupController extends GetxController {
   final ApiGroupService apiGroupService = ApiGroupService();
   var groupName = ''.obs;
   var groupLocation = ''.obs;
+  var invitedGroupList = <GroupDto>[].obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    getInvitedGroupList(); // 컨트롤러 초기화 시 데이터를 가져옵니다
+  }
 
   void setGroupName(String name) {
     groupName.value = name;
@@ -26,6 +33,16 @@ class GroupController extends GetxController {
       groupLoc: groupLocation.value,
     ));
   }
+
+  Future<void> getInvitedGroupList() async {
+    try {
+      List<GroupDto> groups = await apiGroupService.requestInvitedGroupList();
+      invitedGroupList.value = groups;
+    } catch (e) {
+      print("Error getting invited group list: $e");
+    }
+  }
+
 
   Future<List<GroupDto>> getListGroup() async {
     try {
