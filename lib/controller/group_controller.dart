@@ -1,8 +1,8 @@
+import 'dart:ffi';
 
 import 'package:asome/model/dto/group_dto.dart';
 import 'package:asome/service/api_group_service.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
 class GroupController extends GetxController {
   final ApiGroupService apiGroupService = ApiGroupService();
@@ -24,8 +24,7 @@ class GroupController extends GetxController {
     groupLocation.value = location;
   }
 
-  void createGroup() async{
-    // 그룹 생성 로직 추가
+  void createGroup() async {
     print('그룹 이름: ${groupName.value}');
     print('그룹 위치: ${groupLocation.value}');
     await apiGroupService.createGroup(GroupDto(
@@ -43,7 +42,6 @@ class GroupController extends GetxController {
     }
   }
 
-
   Future<List<GroupDto>> getListGroup() async {
     try {
       List<GroupDto> dto = await apiGroupService.requestGroupList();
@@ -54,9 +52,17 @@ class GroupController extends GetxController {
     }
   }
 
+  Future<bool> acceptRequest(int groupId) async {
+    try {
+      return await apiGroupService.acceptRequest(groupId);
+    } catch (e) {
+      print("Error accepting request: $e");
+      return false;
+    }
+  }
+
   @override
   void onClose() {
-    // 컨트롤러가 더 이상 사용되지 않을 때 호출되는 메서드
     super.onClose();
   }
 }

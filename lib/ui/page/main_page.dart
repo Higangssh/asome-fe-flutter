@@ -23,7 +23,7 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
-    controller.getListGroup(); // 페이지 초기화 시 그룹 리스트를 가져옵니다.
+    controller.getInvitedGroupList(); // 페이지 초기화 시 그룹 리스트를 가져옵니다.
   }
 
   @override

@@ -52,12 +52,22 @@ class GroupRequestPage extends StatelessWidget {
                 trailing: Wrap(
                   spacing: 12, // 두 아이콘 사이의 간격
                   children: <Widget>[
-                  ElevatedButton(
+                    ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.blue
                       ),
-                      onPressed: () {
-                        // 확인 버튼 클릭 시 동작
+                      onPressed: () async {
+                        bool isSuccess = await groupController.acceptRequest(request.id!);
+                        if (isSuccess) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Group request accepted')),
+                          );
+                          groupController.getInvitedGroupList(); // 리스트를 다시 로드합니다.
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Failed to accept group request')),
+                          );
+                        }
                       },
                       child: const Text('확인', style: TextStyle(
                           color: Colors.white
