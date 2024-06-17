@@ -3,11 +3,12 @@ import 'package:asome/ui/bar/custom_bottombar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
+import '../../controller/board_controller.dart';
 import '../../controller/group_controller.dart';
-import '../../model/dto/group_dto.dart';
+import '../../controller/message_controller.dart';
 import '../dialog/create_group_dialog.dart';
 import '../dialog/group_list_dialog.dart';
-import '../../controller/message_controller.dart';
+import '../../model/dto/group_dto.dart';
 
 class MainPage extends StatefulWidget {
   MainPage({super.key});
@@ -19,11 +20,13 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   final GroupController controller = Get.find<GroupController>();
   final MessageController messageController = Get.put(MessageController());
+  final BoardListController boardListController = Get.find<BoardListController>();
 
   @override
   void initState() {
     super.initState();
     controller.getInvitedGroupList(); // 페이지 초기화 시 그룹 리스트를 가져옵니다.
+    boardListController.fetchBoardList();
   }
 
   @override
@@ -85,38 +88,6 @@ class _MainPageState extends State<MainPage> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 6,
-                        offset: Offset(0, 3),
-                      ),
-                    ],
-                  ),
-                  child: const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '현재 매칭 진행 현황',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(height: 10),
-                      LinearProgressIndicator(
-                        value: 0.6,
-                        backgroundColor: Colors.red,
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
-                      ),
-                      SizedBox(height: 10),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 20),
-                const SizedBox(height: 10),
                 _buildGridItem(Icons.favorite, '매칭', '그룹과 매칭하세요', () {
                   // 매칭 버튼 클릭 시 동작 정의
                   print("매칭 버튼 클릭됨");
@@ -136,6 +107,8 @@ class _MainPageState extends State<MainPage> {
                   // 고객센터 버튼 클릭 시 동작 정의
                   print("고객센터 버튼 클릭됨");
                 }),
+                const SizedBox(height: 20),
+                _buildBoardSection(),
               ],
             ),
           ),
@@ -184,6 +157,79 @@ class _MainPageState extends State<MainPage> {
         ),
       ),
     );
+  }
+
+  Widget _buildBoardSection() {
+    return Obx(() {
+      if (boardListController.isLoading.value) {
+        return Center(child: CircularProgressIndicator());
+      } else if (boardListController.errorMessage.isNotEmpty) {
+        return Center(child: Text(boardListController.errorMessage.value));
+      } else if (boardListController.boardList.isEmpty) {
+        return Center(child: Text('게시판 조회에 실패했습니다'));
+      } else {
+        return Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: const [
+              BoxShadow(
+                color: Colors.black12,
+                blurRadius: 6,
+                offset: Offset(0, 3),
+              ),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Text(
+                  '즐겨찾는 게시판',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              ),
+              const Divider(color: Colors.grey),
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: boardListController.boardList.length,
+                itemBuilder: (context, index) {
+                  final boardItem = boardListController.boardList[index];
+                  return InkWell(
+                    onTap: () {
+                      // 게시판 아이템 클릭 시 동작 정의
+                      print("게시판 아이템 클릭됨: ID = ${boardItem.id}");
+                      // ID 값을 전달하는 로직 추가
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
+                      child: Row(
+                        children: [
+                          Text(
+                            boardItem.title,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(width: 20),
+                          Expanded(
+                            child: Text(
+                              boardItem.lastPostTitle,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.left,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+        );
+      }
+    });
   }
 
   void showGroupListDialog(BuildContext context, List<GroupDto> groups) {

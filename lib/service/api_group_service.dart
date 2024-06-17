@@ -24,7 +24,6 @@ class ApiGroupService {
       List<GroupDto> groupRequests = body.map((dynamic item) => GroupDto.fromJson(item)).toList();
       return groupRequests;
     } else {
-      _handleError(response);
       return [];
     }
   }
