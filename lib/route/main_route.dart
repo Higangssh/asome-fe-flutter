@@ -1,6 +1,7 @@
 import 'package:asome/bind/main_bind.dart';
 import 'package:asome/model/dto/chat_room_dto.dart';
 import 'package:asome/ui/dialog/create_group_dialog.dart';
+import 'package:asome/ui/page/board_detail_page.dart';
 import 'package:asome/ui/page/chat_page.dart';
 import 'package:asome/ui/page/chat_room_page.dart';
 import 'package:asome/ui/page/group_detail_page.dart';
@@ -25,6 +26,7 @@ class MainRoute{
   static const String chatPage = "/chat/page";
   static const String groupCreateDialog = "/group/create";
   static const String groupRequestRoot = "/group/request";
+  static const String boardDetailRoot = "/board/detail";
 
   static List<GetPage> pages =[
     GetPage(name: intialRoot , page : ()=> const InitialPage(), binding: MainBind()),
@@ -37,5 +39,10 @@ class MainRoute{
     GetPage(name: chatPage , page:()=> ChatPage(chatRoom: Get.arguments), binding: MainBind()),
     GetPage(name: groupCreateDialog, page: ()=> CreateGroupDialog(), binding: MainBind()),
     GetPage(name: groupRequestRoot, page: ()=> GroupRequestPage(),binding: MainBind()),
+    GetPage(name: boardDetailRoot, page: ()=> BoardDetailsPage(
+      boardId: Get.arguments['boardId'],
+      title: Get.arguments['title'],
+    ), binding: MainBind()),
+
   ];
 }

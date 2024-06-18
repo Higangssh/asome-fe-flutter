@@ -1,11 +1,12 @@
-import 'package:asome/ui/bar/custom_appbar.dart';
-import 'package:asome/ui/bar/custom_bottombar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../../controller/board_controller.dart';
 import '../../controller/group_controller.dart';
 import '../../controller/message_controller.dart';
+import '../../route/main_route.dart';
+import '../bar/custom_appbar.dart';
+import '../bar/custom_bottombar.dart';
 import '../dialog/create_group_dialog.dart';
 import '../dialog/group_list_dialog.dart';
 import '../../model/dto/group_dto.dart';
@@ -201,7 +202,10 @@ class _MainPageState extends State<MainPage> {
                     onTap: () {
                       // 게시판 아이템 클릭 시 동작 정의
                       print("게시판 아이템 클릭됨: ID = ${boardItem.id}");
-                      // ID 값을 전달하는 로직 추가
+                      Get.toNamed(MainRoute.boardDetailRoot,  arguments: {
+                        'boardId': boardItem.id,
+                        'title': boardItem.title,
+                      });
                     },
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
@@ -267,3 +271,4 @@ class _MainPageState extends State<MainPage> {
     ).then((_) {});
   }
 }
+

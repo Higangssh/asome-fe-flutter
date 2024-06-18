@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:asome/service/api_form_service.dart';
+import 'package:intl/intl.dart';
 
 class FormController extends GetxController {
   var nickname = ''.obs;
@@ -28,8 +29,17 @@ class FormController extends GetxController {
   final isSchoolNameAvailable =false.obs;
   final isCodeAvailable =false.obs;
   final isSendEmailSuccess = false.obs;
+  final isBirthDayAvailable = false.obs;
+  final birthdateController = TextEditingController().obs;
 
   final ApiFormService apiFormService = ApiFormService();
+
+  @override
+  void onClose() {
+    birthdateController.value.dispose();
+    super.onClose();
+  }
+
 
   void selectGender(int index){
     for (int i = 0; i < gender.length; i++) {
@@ -121,10 +131,32 @@ class FormController extends GetxController {
     return null; // null을 반환하면 검증 통과
   }
 
+  Future<void> pickDate(BuildContext context) async {
+    DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+    );
 
-  void searchBirthdate() async{
-
+    if (pickedDate != null) {
+      String formattedDate = DateFormat('yyyy/MM/dd').format(pickedDate);
+      birthdate.value = formattedDate;
+      print("여기");
+      birthdateController.value.text = "${pickedDate.year}년 ${pickedDate.month}월 ${pickedDate.day}일";
+      birthdayStatusMessage.value = "선택 완료";
+      birthdayBaseColor.value = HexColor("7DC4FF");
+      isBirthDayAvailable.value =true;
+    }
   }
+
+  String? validateBirthDay(String? value) {
+    if(!isBirthDayAvailable.value){
+      return "생년 월일을 선택하세요";
+    }
+    return null; // null을 반환하면 검증 통과
+  }
+
 
   void submitForm() async{
     if (formKey.currentState!.validate()) {

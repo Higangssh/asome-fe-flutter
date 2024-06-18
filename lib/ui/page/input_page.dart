@@ -246,11 +246,12 @@ class FormPage extends StatelessWidget {
                   Obx(() => Container(
                     margin: const EdgeInsets.symmetric(vertical: 8.0),
                     child: TextFormField(
-                      validator: null,
-                      onChanged: (value) => formController.birthdate.value = value,
+                      controller: formController.birthdateController.value,
+                      validator: formController.validateBirthDay,
+                      readOnly: true,
                       decoration: InputDecoration(
                         labelText: '생년월일',
-                        hintText: "생년 월일을 입력하세요",
+                        hintText: "생년 월일 버튼을 눌러주세요",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
                           borderSide: const BorderSide(
@@ -271,8 +272,8 @@ class FormPage extends StatelessWidget {
                           height: buttonHeight,
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 5),
-                            child: ElevatedButton(
-                              onPressed: formController.searchBirthdate,
+                            child: ElevatedButton (
+                              onPressed: () => formController.pickDate(context),
                               style: ElevatedButton.styleFrom(
                                   backgroundColor: formController.birthdayBaseColor.value),
                               child:  FittedBox(

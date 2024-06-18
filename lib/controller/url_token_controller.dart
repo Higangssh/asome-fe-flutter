@@ -2,9 +2,9 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UrlTokenController extends GetxController{
-  var url = "http://172.30.1.8:9000".obs;
-  var webSocketUrl ='ws://172.30.1.8:9000/ws'.obs;
-  var modifyUrl ="172.30.1.8";
+  var url = "http://192.168.219.7:9000".obs;
+  var webSocketUrl ='ws://192.168.219.7:9000/ws'.obs;
+  var modifyUrl ="192.168.219.7";
   var isLoading = false.obs;
   var accessToken = "".obs;
   var refreshToken = "".obs;

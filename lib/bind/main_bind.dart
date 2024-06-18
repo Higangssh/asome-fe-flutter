@@ -1,4 +1,5 @@
 import 'package:asome/controller/board_controller.dart';
+import 'package:asome/controller/board_detail_controller.dart';
 import 'package:asome/controller/bottom_bar_controller.dart';
 import 'package:asome/controller/chat_room_controller.dart';
 import 'package:asome/controller/form_controller.dart';
@@ -17,6 +18,7 @@ class MainBind extends Bindings{
     Get.lazyPut(() => ChatRoomController());
     Get.put(BottomBarController(),  permanent: true);
     Get.put(BoardListController());
+    Get.put(BoardDetailsController());
 
   }
 
