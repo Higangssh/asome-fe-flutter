@@ -135,7 +135,7 @@ class FormController extends GetxController {
     DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
-      firstDate: DateTime(1900),
+      firstDate: DateTime(1950),
       lastDate: DateTime.now(),
     );
 

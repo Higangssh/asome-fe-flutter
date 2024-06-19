@@ -7,6 +7,7 @@ class BoardDetailsDto {
   int commentCount;
   int likeCount;
   bool isLiked;
+  int viewCount;
 
   BoardDetailsDto({
     required this.postId,
@@ -17,6 +18,7 @@ class BoardDetailsDto {
     required this.commentCount,
     required this.likeCount,
     required this.isLiked,
+    required this.viewCount,
   });
 
   factory BoardDetailsDto.fromJson(Map<String, dynamic> json) {
@@ -29,7 +31,33 @@ class BoardDetailsDto {
       commentCount: json['commentCount'],
       likeCount: json['likeCount'],
       isLiked: json['isLiked'],
+      viewCount: json['viewCount']
     );
   }
 
+  String timeAgoSinceDate(String dateString) {
+    DateTime date = DateTime.parse(dateString);
+    Duration diff = DateTime.now().difference(date);
+
+    if (diff.inDays > 365) {
+      int years = (diff.inDays / 365).floor();
+      return "$years년 전";
+    } else if (diff.inDays > 30) {
+      int months = (diff.inDays / 30).floor();
+      return "$months달 전";
+    } else if (diff.inDays > 0) {
+      return "${diff.inDays}일 전";
+    } else if (diff.inHours > 0) {
+      return "${diff.inHours}시간 전";
+    } else if (diff.inMinutes > 0) {
+      return "${diff.inMinutes}분 전";
+    } else {
+      return "방금 전";
+    }
+  }
+
+
+  String get relativeTime {
+    return timeAgoSinceDate(createDate);
+  }
 }

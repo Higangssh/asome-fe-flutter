@@ -9,8 +9,11 @@ import 'package:asome/ui/page/initial_page.dart';
 import 'package:asome/ui/page/input_page.dart';
 import 'package:asome/ui/page/login_page.dart';
 import 'package:asome/ui/page/main_page.dart';
+import 'package:asome/ui/page/post_page.dart';
+import 'package:asome/ui/page/post_write_page.dart';
 import 'package:asome/webview/login_webview.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart';
 
 import '../ui/page/group_request_page.dart';
 
@@ -27,6 +30,8 @@ class MainRoute{
   static const String groupCreateDialog = "/group/create";
   static const String groupRequestRoot = "/group/request";
   static const String boardDetailRoot = "/board/detail";
+  static const String postPageRoot = "/board/post";
+  static const String postWritePage = "/post/write";
 
   static List<GetPage> pages =[
     GetPage(name: intialRoot , page : ()=> const InitialPage(), binding: MainBind()),
@@ -43,6 +48,10 @@ class MainRoute{
       boardId: Get.arguments['boardId'],
       title: Get.arguments['title'],
     ), binding: MainBind()),
+    GetPage(name: postPageRoot , page: ()=> PostPage(
+      detail: Get.arguments,
+    )),
+    GetPage(name: postWritePage, page: ()=>WritePostPage(),)
 
   ];
 }
