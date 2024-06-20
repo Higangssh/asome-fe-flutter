@@ -5,7 +5,7 @@ class CommentDto {
   final String createDate;
   final String content;
   final int likeCount;
-  final int replyCount;
+  int replyCount;
   final int? parentId;
   final List<CommentDto> children;
 
@@ -50,6 +50,27 @@ class CommentDto {
       'parentId': parentId,
       'children': children.map((child) => child.toJson()).toList(),
     };
+  }
+
+  String timeAgoSinceDate(String dateString) {
+    DateTime date = DateTime.parse(dateString);
+    Duration diff = DateTime.now().difference(date);
+
+    if (diff.inDays > 365) {
+      int years = (diff.inDays / 365).floor();
+      return "$years년 전";
+    } else if (diff.inDays > 30) {
+      int months = (diff.inDays / 30).floor();
+      return "$months달 전";
+    } else if (diff.inDays > 0) {
+      return "${diff.inDays}일 전";
+    } else if (diff.inHours > 0) {
+      return "${diff.inHours}시간 전";
+    } else if (diff.inMinutes > 0) {
+      return "${diff.inMinutes}분 전";
+    } else {
+      return "방금 전";
+    }
   }
 
   @override

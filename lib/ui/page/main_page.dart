@@ -36,6 +36,10 @@ class _MainPageState extends State<MainPage> {
     super.dispose();
   }
 
+  Future<void> _refreshPage() async {
+    await boardListController.fetchBoardList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,67 +54,71 @@ class _MainPageState extends State<MainPage> {
             ),
           ),
         ),
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 20),
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.blue[50],
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(Icons.notifications, color: HexColor("#00E8C1")),
-                      const SizedBox(width: 10,),
-                      Expanded(
-                        child: Obx(() {
-                          return AnimatedSwitcher(
-                            duration: const Duration(milliseconds: 500),
-                            transitionBuilder: (Widget child, Animation<double> animation) {
-                              return FadeTransition(opacity: animation, child: child);
-                            },
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                messageController.currentMessage,
-                                key: ValueKey<String>(messageController.currentMessage),
-                                style: const TextStyle(fontSize: 16),
+        child: RefreshIndicator(
+          onRefresh: _refreshPage,
+          child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 20),
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.blue[50],
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(Icons.notifications, color: HexColor("#00E8C1")),
+                        const SizedBox(width: 10,),
+                        Expanded(
+                          child: Obx(() {
+                            return AnimatedSwitcher(
+                              duration: const Duration(milliseconds: 500),
+                              transitionBuilder: (Widget child, Animation<double> animation) {
+                                return FadeTransition(opacity: animation, child: child);
+                              },
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  messageController.currentMessage,
+                                  key: ValueKey<String>(messageController.currentMessage),
+                                  style: const TextStyle(fontSize: 16),
+                                ),
                               ),
-                            ),
-                          );
-                        }),
-                      ),
-                    ],
+                            );
+                          }),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                const SizedBox(height: 20),
-                _buildGridItem(Icons.favorite, '매칭', '그룹과 매칭하세요', () {
-                  // 매칭 버튼 클릭 시 동작 정의
-                  print("매칭 버튼 클릭됨");
-                }),
-                const SizedBox(height: 10),
-                _buildGridItem(Icons.group_add, '그룹 만들기', '새로운 그룹을 만드세요', () {
-                  // 그룹 만들기 버튼 클릭 시 동작 정의
-                  showCreateGroupDialog(context);
-                }),
-                const SizedBox(height: 10),
-                _buildGridItem(Icons.group, '그룹 조회', '기존 그룹을 조회하세요', () async {
-                  List<GroupDto> groupList = await controller.getListGroup();
-                  showGroupListDialog(context, groupList);
-                }),
-                const SizedBox(height: 10),
-                _buildGridItem(Icons.support_agent, '고객센터', '문의사항을 남기세요', () {
-                  // 고객센터 버튼 클릭 시 동작 정의
-                  print("고객센터 버튼 클릭됨");
-                }),
-                const SizedBox(height: 20),
-                _buildBoardSection(),
-              ],
+                  const SizedBox(height: 20),
+                  _buildGridItem(Icons.favorite, '매칭', '그룹과 매칭하세요', () {
+                    // 매칭 버튼 클릭 시 동작 정의
+                    print("매칭 버튼 클릭됨");
+                  }),
+                  const SizedBox(height: 10),
+                  _buildGridItem(Icons.group_add, '그룹 만들기', '새로운 그룹을 만드세요', () {
+                    // 그룹 만들기 버튼 클릭 시 동작 정의
+                    showCreateGroupDialog(context);
+                  }),
+                  const SizedBox(height: 10),
+                  _buildGridItem(Icons.group, '그룹 조회', '기존 그룹을 조회하세요', () async {
+                    List<GroupDto> groupList = await controller.getListGroup();
+                    showGroupListDialog(context, groupList);
+                  }),
+                  const SizedBox(height: 10),
+                  _buildGridItem(Icons.support_agent, '고객센터', '문의사항을 남기세요', () {
+                    // 고객센터 버튼 클릭 시 동작 정의
+                    print("고객센터 버튼 클릭됨");
+                  }),
+                  const SizedBox(height: 20),
+                  _buildBoardSection(),
+                ],
+              ),
             ),
           ),
         ),
@@ -271,4 +279,3 @@ class _MainPageState extends State<MainPage> {
     ).then((_) {});
   }
 }
-

@@ -1,13 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
+import 'package:get/get.dart';
 import '../../model/dto/comment_dto.dart';
+import '../../controller/post_controller.dart';
 
 class CommentItem extends StatefulWidget {
   final CommentDto comment;
+  final bool isReply;
+  final PostController controller; // Add controller to the widget
 
-  CommentItem({required this.comment});
+  CommentItem({required this.comment, required this.isReply, required this.controller});
 
   @override
   _CommentItemState createState() => _CommentItemState();
@@ -15,6 +18,7 @@ class CommentItem extends StatefulWidget {
 
 class _CommentItemState extends State<CommentItem> {
   bool showReplies = false;
+  final FocusNode replyFocusNode = FocusNode(); // FocusNode for the reply text field
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +32,7 @@ class _CommentItemState extends State<CommentItem> {
             children: [
               const CircleAvatar(
                 radius: 20,
-                backgroundImage: AssetImage('assets/default_avatar.png'), // 기본 이미지
+                backgroundImage: AssetImage('assets/default_avatar.png'),
               ),
               SizedBox(width: 10),
               Expanded(
@@ -43,24 +47,25 @@ class _CommentItemState extends State<CommentItem> {
                         ),
                         SizedBox(width: 10),
                         Text(
-                          widget.comment.createDate,
+                          widget.comment.timeAgoSinceDate(widget.comment.createDate),
                           style: TextStyle(color: Colors.grey),
                         ),
                       ],
                     ),
                     SizedBox(height: 5),
                     Text(widget.comment.content),
+                    if (widget.isReply) SizedBox(height: 8),
                     Row(
                       children: [
                         const Padding(
-                          padding: EdgeInsets.all(0), // 패딩 제거
+                          padding: EdgeInsets.all(0),
                           child: FaIcon(
                             FontAwesomeIcons.thumbsUp,
                             size: 16,
                             color: Colors.grey,
                           ),
                         ),
-                        const SizedBox(width: 4), // 아이콘과 텍스트 사이 간격 조정
+                        const SizedBox(width: 4),
                         Text(
                           "좋아요  ${widget.comment.likeCount.toString()}",
                           style: const TextStyle(
@@ -68,18 +73,32 @@ class _CommentItemState extends State<CommentItem> {
                             fontSize: 12,
                           ),
                         ),
-                        SizedBox(width: 10),
-                        TextButton(
-                          onPressed: () {
-                            setState(() {
-                              showReplies = !showReplies;
-                            });
-                          },
-                          child: Text(
-                            "답글  ${widget.comment.replyCount}",
-                            style: TextStyle(fontSize: 12),
+                        if (!widget.isReply)
+                          Row(
+                            children: [
+                              SizedBox(width: 3),
+                              TextButton(
+                                onPressed: () {
+                                  setState(() {
+                                    showReplies = !showReplies;
+                                  });
+                                },
+                                child: Text(
+                                  "답글  ${widget.comment.replyCount}",
+                                  style: TextStyle(fontSize: 12),
+                                ),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  widget.controller.setParentIdAndFocus(widget.comment.id);
+                                },
+                                child: Text(
+                                  "답글 쓰기",
+                                  style: TextStyle(fontSize: 12),
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
                       ],
                     ),
                   ],
@@ -88,7 +107,7 @@ class _CommentItemState extends State<CommentItem> {
               IconButton(
                 icon: Icon(Icons.more_vert, color: Colors.grey),
                 onPressed: () {
-                  // 더보기 클릭 이벤트 처리
+                  // Handle more options
                 },
               ),
             ],
@@ -99,11 +118,20 @@ class _CommentItemState extends State<CommentItem> {
             padding: const EdgeInsets.only(left: 40.0),
             child: Column(
               children: widget.comment.children
-                  .map((child) => CommentItem(comment: child))
+                  .map((child) => CommentItem(comment: child, isReply: true, controller: widget.controller))
                   .toList(),
             ),
           ),
       ],
     );
   }
+
+  @override
+  void dispose() {
+    replyFocusNode.dispose(); // Dispose FocusNode
+    super.dispose();
+  }
 }
+
+
+

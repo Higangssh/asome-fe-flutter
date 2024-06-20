@@ -1,23 +1,39 @@
+
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:flutter/material.dart';
 
+import '../model/dto/category_dto.dart';
 import '../model/dto/comment_dto.dart';
 import '../service/api_comment_service.dart';
 
 class PostController extends GetxController {
   var comments = <CommentDto>[].obs;
+  var categories = <CategoryDto>[].obs;
   var isLoading = false.obs;
   var errorMessage = ''.obs;
-  late final ApiCommentService apiCommentService;
-  final int postId; // postId를 멤버 변수로 선언
+  var likeCount = 0.obs;
+  var isLiked = false.obs;
+  var parentId = Rxn<int>(); // Added to keep track of the parent comment ID
+  late final ApiBoardService apiCommentService;
+  final int postId;
+  TextEditingController commentController = TextEditingController(); // Added TextEditingController
+  FocusNode replyFocusNode = FocusNode(); // Added FocusNode
 
-  PostController(this.postId); // 생성자에서 postId를 받아서 초기화
+  PostController(this.postId);
 
   @override
   void onInit() {
-    apiCommentService = ApiCommentService();
-    fetchComments(postId, 0); // postId를 사용하여 fetchComments 호출
+    apiCommentService = ApiBoardService();
+    fetchComments(postId, 0);
     super.onInit();
+  }
+
+  @override
+  void dispose() {
+    commentController.dispose(); // Dispose TextEditingController
+    replyFocusNode.dispose(); // Dispose FocusNode
+    super.dispose();
   }
 
   void fetchComments(int postId, int pageNum) async {
@@ -31,5 +47,44 @@ class PostController extends GetxController {
       isLoading(false);
     }
   }
-}
 
+  void changeCountAndIsLiked() {
+    if (isLiked.value) {
+      isLiked.value = false;
+      likeCount.value--;
+    } else {
+      isLiked.value = true;
+      likeCount.value++;
+    }
+  }
+
+  Future<void> addComment(String content) async {
+    try {
+      isLoading(true);
+      var newComment = await apiCommentService.addComment(postId, content, parentId.value);
+      if (parentId.value != null) {
+        // Add as a reply to the parent comment
+        var parentComment = comments.firstWhere((comment) => comment.id == parentId.value);
+        parentComment.children.add(newComment);
+        parentComment.replyCount++;
+      } else {
+        // Add as a top-level comment
+        comments.add(newComment);
+      }
+      commentController.clear(); // Clear the text field after adding comment
+      parentId.value = null; // Reset parentId after adding comment
+      isLoading(false);
+    } catch (e) {
+      errorMessage(e.toString());
+      isLoading(false);
+    }
+  }
+
+  void setParentIdAndFocus(int? id) {
+    parentId.value = id;
+    commentController.text = ''; // Clear the text field
+    Future.delayed(Duration(milliseconds: 100), () {
+      replyFocusNode.requestFocus(); // Request focus on the text field
+    });
+  }
+}

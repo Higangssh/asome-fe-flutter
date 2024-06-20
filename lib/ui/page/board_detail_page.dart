@@ -83,7 +83,6 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                 ...controller.boardDetailsList.map((detail) {
                   return GestureDetector(
                     onTap: () {
-                      print("클릭됨");
                       Get.toNamed(MainRoute.postPageRoot, arguments: detail);
                     },
                     child: Container(
@@ -94,19 +93,26 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                         children: [
                           Text(
                             detail.title,
-                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                            overflow: TextOverflow.ellipsis, // 한 줄 넘어가면 ... 표시
+                            maxLines: 1,
                           ),
                           SizedBox(height: 10),
-                          Text(detail.content, style: TextStyle(fontSize: 16)),
+                          Text(
+                            detail.content,
+                            style: TextStyle(fontSize: 11),
+                            overflow: TextOverflow.ellipsis, // 한 줄 넘어가면 ... 표시
+                            maxLines: 1,
+                          ),
                           SizedBox(height: 10),
                           Row(
                             children: [
-                              Text(detail.nick, style: TextStyle(color: Colors.grey)),
+                              Text(detail.nick, style: TextStyle(color: Colors.grey, fontSize: 8)),
                               SizedBox(width: 10),
-                              Text(detail.relativeTime, style: TextStyle(color: Colors.grey)),
+                              Text(detail.relativeTime, style: TextStyle(color: Colors.grey, fontSize: 8)),
                             ],
                           ),
-                          SizedBox(height: 10),
+                          SizedBox(height: 5),
                           Padding(
                             padding: const EdgeInsets.only(top: 5),
                             child: Row(
@@ -120,7 +126,7 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                                       FaIcon(
                                         FontAwesomeIcons.thumbsUp,
                                         color: detail.isLiked ? Colors.orange : Colors.grey,
-                                        size: 20,
+                                        size: 15,
                                       ),
                                       SizedBox(width: 5),
                                       Text(detail.likeCount.toString()),
@@ -139,7 +145,7 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                                       FaIcon(
                                           FontAwesomeIcons.comment,
                                           color: detail.commentCount > 0 ? HexColor("#00E8C1") : Colors.grey,
-                                          size: 20),
+                                          size: 15),
                                       SizedBox(width: 5),
                                       Text(detail.commentCount.toString()),
                                     ],

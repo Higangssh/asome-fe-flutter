@@ -9,6 +9,7 @@ class BoardDetailsController extends GetxController {
   var isLastPage = false.obs;
   var errorMessage = ''.obs;
   var pageNum = 0.obs;
+  var likeCount = '0'.obs;
 
   final ApiPostService apiPostService = ApiPostService();
 

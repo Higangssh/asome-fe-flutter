@@ -50,7 +50,8 @@ class MainRoute{
     ), binding: MainBind()),
     GetPage(name: postPageRoot , page: ()=> PostPage(
       detail: Get.arguments,
-    )),
+    ),
+    binding: MainBind()),
     GetPage(name: postWritePage, page: ()=>WritePostPage(),)
 
   ];
