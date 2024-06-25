@@ -1,0 +1,12 @@
+import java.util.Properties
+
+def loadDotenvProperties() {
+    def properties = new Properties()
+    // 상위 디렉토리의 .env 파일을 읽습니다
+    file("${rootProject.projectDir}/../.env").withInputStream { stream ->
+        properties.load(stream)
+    }
+    return properties
+}
+
+ext.dotenv = loadDotenvProperties()

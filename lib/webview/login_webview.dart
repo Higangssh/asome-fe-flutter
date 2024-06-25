@@ -48,7 +48,7 @@ class _LoginWebViewState extends State<LoginWebView> {
             // 로그인 성공 후에만 처리
             if (request.url.contains('http://localhost:9000/login/oauth2/code/google?state')) {
               // 리다이렉트될 URL의 호스트를 변경하여 이동
-              String modifiedUrl = changeRedirectHost(request.url, urlTokenController.modifyUrl);
+              String modifiedUrl = changeRedirectHost(request.url, urlTokenController.modifyUrl as String);
               _webViewController.loadUrl(modifiedUrl);
               return NavigationDecision.prevent;
             }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:asome/service/api_login_service.dart';
 import 'package:asome/controller/url_token_controller.dart';
-import 'package:asome/ui/bar/custom_appbar.dart';
+import 'package:asome/controller/login_controller.dart';
 
 class LoginPage extends GetView<UrlTokenController> {
   const LoginPage({super.key});
@@ -10,6 +10,7 @@ class LoginPage extends GetView<UrlTokenController> {
   @override
   Widget build(BuildContext context) {
     final ApiLoginService loginService = ApiLoginService(controller);
+    final LoginController loginController = Get.put(LoginController());
     return Scaffold(
       body: Stack(
         children: [
@@ -27,17 +28,17 @@ class LoginPage extends GetView<UrlTokenController> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              //중앙에 메인 로고
+              // 중앙에 메인 로고
               Container(
-                 margin: const EdgeInsets.only(top: 50),
-                child:ClipRRect(
-                  borderRadius: BorderRadius.circular(30),
-                  child:Image.asset(
-                    "assets/images/logo.webp",
-                    height: 100,
-                    width: 100,
-                  ),
-                )
+                  margin: const EdgeInsets.only(top: 50),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(30),
+                    child: Image.asset(
+                      "assets/images/logo.webp",
+                      height: 100,
+                      width: 100,
+                    ),
+                  )
               ),
               const SizedBox(height: 350,),
               Center(
@@ -71,13 +72,9 @@ class LoginPage extends GetView<UrlTokenController> {
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      height: 5,
-                    ),
+                    const SizedBox(height: 5,),
                     ElevatedButton(
-                      onPressed: () {
-                        // 카카오 로그인 처리
-                      },
+                      onPressed: loginController.kakaoLogin, // 카카오 로그인 처리
                       style: TextButton.styleFrom(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
@@ -96,9 +93,7 @@ class LoginPage extends GetView<UrlTokenController> {
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      height: 5,
-                    ),
+                    const SizedBox(height: 5,),
                     ElevatedButton(
                       onPressed: () {
                         // 네이버 로그인 처리
@@ -131,6 +126,3 @@ class LoginPage extends GetView<UrlTokenController> {
     );
   }
 }
-
-
-

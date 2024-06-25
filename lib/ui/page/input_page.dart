@@ -7,7 +7,7 @@ import 'package:hexcolor/hexcolor.dart';
 import '../../controller/form_controller.dart';
 
 class FormPage extends StatelessWidget {
-  final FormController formController = Get.put(FormController());
+  final FormController formController = Get.find<FormController>();
 
 
   @override

@@ -1,3 +1,18 @@
+buildscript {
+    ext.kotlin_version = '1.5.31'
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.0.2'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+// dotenv.gradle 파일을 로드하여 환경 변수를 설정합니다
+apply from: "${rootProject.projectDir}/dotenv.gradle"
+
 allprojects {
     repositories {
         google()
@@ -13,6 +28,9 @@ subprojects {
     project.evaluationDependsOn(':app')
 }
 
-tasks.register("clean", Delete) {
-    delete rootProject.buildDir
+// clean 작업이 이미 존재하는지 확인하고 없을 때만 정의합니다
+if (!tasks.findByName("clean")) {
+    tasks.register("clean", Delete) {
+        delete rootProject.buildDir
+    }
 }

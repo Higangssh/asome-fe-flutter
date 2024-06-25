@@ -1,10 +1,12 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UrlTokenController extends GetxController{
-  var url = "http://172.30.1.76:9000".obs;
-  var webSocketUrl ='ws://172.30.1.76:9000/ws'.obs;
-  var modifyUrl ="172.30.1.76";
+  var serverIp = dotenv.env['SERVER_IP']!;
+  late var url = "http://$serverIp:9000".obs;
+  late var webSocketUrl = 'ws://$serverIp:9000/ws'.obs;
+  late var modifyUrl = "$serverIp".obs;
   var isLoading = false.obs;
   var accessToken = "".obs;
   var refreshToken = "".obs;
