@@ -114,22 +114,25 @@ class PostPage extends StatelessWidget {
                                 ),
                               ),
                               SizedBox(width: 10),
-                              OutlinedButton(
-                                onPressed: () {
-                                  // 저장하기 클릭 이벤트 처리
-                                  print("저장하기 클릭됨");
-                                },
-                                child: Text(
-                                  "저장",
-                                  style: TextStyle(color: Colors.grey),
-                                ),
-                                style: OutlinedButton.styleFrom(
-                                  side: BorderSide(color: Colors.grey),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30.0),
+                              Obx(() {
+                                return OutlinedButton(
+                                  onPressed: () {
+                                    postController.toggleScrap();
+                                  },
+                                  child: Text(
+                                    postController.isScrap.value ? "저장됨" : "저장",
+                                    style: TextStyle(color: Colors.grey),
                                   ),
-                                ),
-                              ),
+                                  style: OutlinedButton.styleFrom(
+                                    side: BorderSide(
+                                      color: postController.isScrap.value ? Colors.orange : Colors.grey, // 테두리 색상 변경
+                                    ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30.0),
+                                    ),
+                                  ),
+                                );
+                              }),
                             ],
                           );
                         }),

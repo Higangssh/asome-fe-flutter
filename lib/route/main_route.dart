@@ -9,6 +9,7 @@ import 'package:asome/ui/page/initial_page.dart';
 import 'package:asome/ui/page/input_page.dart';
 import 'package:asome/ui/page/login_page.dart';
 import 'package:asome/ui/page/main_page.dart';
+import 'package:asome/ui/page/my_page.dart';
 import 'package:asome/ui/page/post_page.dart';
 import 'package:asome/ui/page/post_write_page.dart';
 import 'package:asome/webview/login_webview.dart';
@@ -32,6 +33,7 @@ class MainRoute{
   static const String boardDetailRoot = "/board/detail";
   static const String postPageRoot = "/board/post";
   static const String postWritePage = "/post/write";
+  static const String myPageRoot = "/my/page";
 
   static List<GetPage> pages =[
     GetPage(name: intialRoot , page : ()=> const InitialPage(), binding: MainBind()),
@@ -52,7 +54,7 @@ class MainRoute{
       detail: Get.arguments,
     ),
     binding: MainBind()),
-    GetPage(name: postWritePage, page: ()=>WritePostPage(),)
-
+    GetPage(name: postWritePage, page: ()=>WritePostPage(),),
+    GetPage(name: myPageRoot, page: ()=>MyPage())
   ];
 }

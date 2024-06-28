@@ -18,8 +18,8 @@ class CustomBottomBar extends StatelessWidget {
           label: '홈',
         ),
         BottomNavigationBarItem(
-          icon: FaIcon(FontAwesomeIcons.fileLines),
-          label: '게시판',
+          icon: FaIcon(FontAwesomeIcons.person),
+          label: 'My',
         ),
         BottomNavigationBarItem(
           icon: FaIcon(FontAwesomeIcons.solidComments),

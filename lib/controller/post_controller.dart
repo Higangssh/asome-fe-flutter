@@ -14,6 +14,7 @@ class PostController extends GetxController {
   var errorMessage = ''.obs;
   var likeCount = 0.obs;
   var isLiked = false.obs;
+  var isScrap = false.obs;
   var parentId = Rxn<int>(); // Added to keep track of the parent comment ID
   late final ApiBoardService apiCommentService;
   final int postId;
@@ -86,5 +87,21 @@ class PostController extends GetxController {
     Future.delayed(Duration(milliseconds: 100), () {
       replyFocusNode.requestFocus(); // Request focus on the text field
     });
+  }
+
+  Future<void> toggleScrap() async {
+    try {
+      isLoading(true);
+      final response = await apiCommentService.toggleScrap(postId);
+      if (response) {
+        isScrap.value = !isScrap.value;
+      } else {
+        throw Exception('Failed to toggle scrap');
+      }
+    } catch (e) {
+      errorMessage(e.toString());
+    } finally {
+      isLoading(false);
+    }
   }
 }

@@ -78,5 +78,22 @@ class ApiBoardService {
       throw Exception('Failed to add comment');
     }
   }
+
+  Future<bool> toggleScrap(int postId) async{
+    String baseUrl = "${_controller.url.value}/api/board/post/scrap?postId=$postId";
+    var headers = _controller.createHeaders();
+
+    try {
+      final response = await http.post(Uri.parse(baseUrl), headers: headers);
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
+    }
+
+  }
 }
 

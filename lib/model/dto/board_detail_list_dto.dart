@@ -1,3 +1,5 @@
+import 'package:http/http.dart';
+
 class BoardDetailsDto {
   final int postId;
   final String nick;
@@ -8,6 +10,7 @@ class BoardDetailsDto {
   int likeCount;
   bool isLiked;
   int viewCount;
+  bool isScrap;
 
   BoardDetailsDto({
     required this.postId,
@@ -19,6 +22,7 @@ class BoardDetailsDto {
     required this.likeCount,
     required this.isLiked,
     required this.viewCount,
+    required this.isScrap,
   });
 
   factory BoardDetailsDto.fromJson(Map<String, dynamic> json) {
@@ -31,7 +35,8 @@ class BoardDetailsDto {
       commentCount: json['commentCount'],
       likeCount: json['likeCount'],
       isLiked: json['isLiked'],
-      viewCount: json['viewCount']
+      viewCount: json['viewCount'],
+      isScrap: json['isScrap'],
     );
   }
 
