@@ -114,6 +114,7 @@ class ApiFormService{
        print("accessJws : $accessJws");
        _controller.setAccessToken(accessJws);
        _controller.setNick(dto.nick!);
+       _controller.setGender(dto.gender!);
        print('새 엑세스 성공');
     } else {
       print('Request failed with status: ${response.statusCode}.');

@@ -36,7 +36,6 @@ class FormController extends GetxController {
 
   @override
   void onClose() {
-    birthdateController.value.dispose();
     super.onClose();
   }
 

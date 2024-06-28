@@ -9,7 +9,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   CustomAppBar({
     super.key,
     required this.themeData, // 생성자 매개변수로 ThemeData 추가
-    this.notificationCount = 3, // 기본 알림 개수는 0으로 설정
+    this.notificationCount = 0, // 기본 알림 개수는 0으로 설정
   });
 
   @override
